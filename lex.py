@@ -34,10 +34,15 @@ def tokenizeln(line):
     tokenized = []
     for match in matches:
         if match[1][0] == "function":
-            tokenized.append(["function", match[0].group()[:-1]])
+            tokenized.append([match[1][0], match[0].group()[:-1]])
+            continue
+        if match[1][0] == "constant":
+            if match[1][1] == "string":
+                tokenized.append([match[1][0], match[1][1], match[0].group()[1:-1]])
+                continue
             continue
         tokenized.append(match[1])
     return tokenized
 
 if __name__ == "__main__":
-    lex("test/consoleout.psn")
+    print(lex("test/consoleout.psn"))
