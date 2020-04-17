@@ -46,6 +46,11 @@ namespace makebin
                 epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(splitline[1]));
                 return;
             }
+            if (splitline[0] == "ldint")
+            {
+                epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(int.Parse(splitline[1])));
+                return;
+            }
             if (splitline[0] == "call")
             {
                 if (splitline[1] == "print") {
