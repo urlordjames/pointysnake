@@ -26,8 +26,6 @@ tokens = {
     "\\)": ["functionend"]
 }
 
-#return 
-
 def tokenizeln(line):
     matches = []
     for token in tokens.keys():
