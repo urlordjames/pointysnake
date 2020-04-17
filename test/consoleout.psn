@@ -1,2 +1,5 @@
 #this should print hello!
 print("hello!")
+
+#this should print 5
+print(5)
