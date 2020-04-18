@@ -70,6 +70,33 @@ namespace makebin
                 }
                 return;
             }
+            if (splitline[0] == "ldvar")
+            {
+                Local var = epBody.Variables[0];
+                int i = 0;
+                while (var.Name != splitline[1])
+                {
+                    i++;
+                    var = epBody.Variables[i];
+                }
+                epBody.Instructions.Add(OpCodes.Ldloc.ToInstruction(var));
+                return;
+            }
+            if (splitline[0] == "setvar")
+            {
+                Local local = null;
+                if (splitline[2] == "int")
+                {
+                    epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(int.Parse(splitline[3])));
+                    local = new Local(mod.CorLibTypes.Int32, splitline[1]);
+                }
+                if (splitline[2] == "string") {
+                    epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(int.Parse(splitline[3])));
+                    local = new Local(mod.CorLibTypes.String, splitline[1]);
+                }
+                epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
+                return;
+            }
             Console.WriteLine(line);
         }
     }
