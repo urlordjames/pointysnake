@@ -27,7 +27,8 @@ namespace makebin
             foreach (String line in file) {
                 WriteInstruction(line, mod, entryPoint.Body);
             }
-            entryPoint.Body.Instructions.Add(OpCodes.Endfinally.ToInstruction());
+            entryPoint.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
+            entryPoint.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
             entryPoint.Body.OptimizeBranches();
             entryPoint.Body.OptimizeMacros();
             Console.WriteLine("done");
@@ -53,9 +54,15 @@ namespace makebin
             }
             if (splitline[0] == "call")
             {
-                if (splitline[1] == "print") {
+                if (splitline[1] == "printstr") {
                     var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
                     var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, mod.CorLibTypes.String), consoleRef);
+                    epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
+                }
+                if (splitline[1] == "printint")
+                {
+                    var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
+                    var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, mod.CorLibTypes.Int32), consoleRef);
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
                 }
                 return;
