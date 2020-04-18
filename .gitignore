@@ -132,3 +132,4 @@ makebin/bin
 makebin/obj
 makebin/packages
 makebin/.vs
+precomp.psnbin

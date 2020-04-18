@@ -3,3 +3,7 @@ print("hello!")
 
 #this should print 5
 print(5)
+
+#this should print 3
+var variable = 3
+print($variable)

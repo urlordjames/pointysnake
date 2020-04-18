@@ -1,5 +1,7 @@
 from parse import parse
 
+vartypes = {}
+
 def psncompile(filename):
     parsed = parse(filename)
     print(parsed)
@@ -8,12 +10,22 @@ def psncompile(filename):
         if line[0] == "call":
             fname = line[1]
             for arg in line[2]:
+                if type(arg) == list:
+                    if arg[0] == "ldvar":
+                        f.write("ldvar, " + arg[1] + "\n")
                 if type(arg) == str:
                     f.write("ldstr, " + arg + "\n")
                 if type(arg) == int:
                     f.write("ldint, " + str(arg) + "\n")
-            fname += str(type(arg).__name__)
+            argtype = str(type(arg).__name__)
+            if argtype == "list":
+                fname += vartypes[arg[1]]
+            else:
+                fname += argtype
             f.write(line[0] + ", " + fname + "\n")
+        elif line[0] == "setvar":
+            vartypes[line[2]] = line[1]
+            f.write("setvar, " + line[2] + ", " + line[1] + ", " + str(line[3]) + "\n")
     f.close()
 
 if __name__ == "__main__":

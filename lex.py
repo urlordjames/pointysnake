@@ -24,7 +24,9 @@ tokens = {
     "[a-z]+\\(": ["function"],
     "[0-9]+": ["int"],
     "\".*\"": ["string"],
-    "\\)": ["functionend"]
+    "\\)": ["functionend"],
+    "var [a-z]+ = ": ["setvar"],
+    "\\$[a-z]+": ["var"]
 }
 
 def tokenizeln(line):
@@ -45,6 +47,12 @@ def tokenizeln(line):
             continue
         if match[1][0] == "int":
             tokenized.append([match[1][0], int(match[0].group())])
+            continue
+        if match[1][0] == "var":
+            tokenized.append([match[1][0], match[0].group()[1:]])
+            continue
+        if match[1][0] == "setvar":
+            tokenized.append([match[1][0], match[0].group()[4:-3]])
             continue
         tokenized.append(match[1])
     return tokenized
