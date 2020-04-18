@@ -7,7 +7,7 @@ jobs:
             - checkout
             - run:
                 name: build
-                command: ./build.sh
+                command: chmod +x build.sh && ./build.sh
 
 workflows:
     version: 2
