@@ -14,11 +14,11 @@ jobs:
             - run:
                 name: compile test
                 command: chmod +x compile.sh && ./compile.sh test/tests.psn
+            - store_artifacts:
+                path: makebin.exe
             - run:
                 name: execute test
                 command: mono executable.exe
-            - store_artifacts:
-                path: makebin.exe
 
 workflows:
     version: 2
