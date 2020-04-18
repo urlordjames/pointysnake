@@ -3,7 +3,7 @@ from parse import parse
 def psncompile(filename):
     parsed = parse(filename)
     print(parsed)
-    f = open("makebin/bin/Debug/precomp.psnbin", "w")
+    f = open("precomp.psnbin", "w")
     for line in parsed:
         if line[0] == "call":
             fname = line[1]
