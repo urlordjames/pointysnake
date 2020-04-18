@@ -29,4 +29,4 @@ def psncompile(filename):
     f.close()
 
 if __name__ == "__main__":
-    psncompile("test/consoleout.psn")
+    psncompile("test/tests.psn")

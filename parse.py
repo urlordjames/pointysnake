@@ -23,4 +23,4 @@ def parseline(line):
     return -1
 
 if __name__ == "__main__":
-    print(parse("test/consoleout.psn"))
+    print(parse("test/tests.psn"))

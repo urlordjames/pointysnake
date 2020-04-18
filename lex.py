@@ -58,4 +58,4 @@ def tokenizeln(line):
     return tokenized
 
 if __name__ == "__main__":
-    print(lex("test/consoleout.psn"))
+    print(lex("test/tests.psn"))
