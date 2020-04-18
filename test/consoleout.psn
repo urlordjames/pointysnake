@@ -1,9 +1,22 @@
+#test of printing string literals
 #this should print hello!
 print("hello!")
 
+#test of printing int literals
 #this should print 5
 print(5)
 
+#test of integer variables
 #this should print 3
 var variable = 3
+print($variable)
+
+#test of multiple variables and string variables
+#this should print 2
+var secondvar = "2"
+print($secondvar)
+
+#test of variable overwriting
+#this should print 29
+var variable = 29
 print($variable)
