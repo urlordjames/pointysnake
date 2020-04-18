@@ -17,6 +17,11 @@ jobs:
             - run:
                 name: execute test
                 command: mono executable.exe
+            - run:
+                name: pack binaries
+                command: chmod +x pack.sh && ./pack.sh
+            - store_artifacts:
+                path: /tmp/artifacts.zip
 
 workflows:
     version: 2
