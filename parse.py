@@ -16,7 +16,7 @@ def parseline(line):
     if line[0][0] == "setvar":
         return ["setvar", line[1][0], line[0][1], line[1][1]]
     if line[0][0] == "function":
-        if line[1][0] == "string" or line[1][0] == "int":
+        if line[1][0] == "str" or line[1][0] == "int":
             return ["call", line[0][1], [parseline(line[1][1])]]
         if line[1][0] == "var":
             return ["call", line[0][1], [["ldvar", line[1][1]]]]

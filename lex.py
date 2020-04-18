@@ -23,7 +23,7 @@ import re
 tokens = {
     "[a-z]+\\(": ["function"],
     "[0-9]+": ["int"],
-    "\".*\"": ["string"],
+    "\".*\"": ["str"],
     "\\)": ["functionend"],
     "var [a-z]+ = ": ["setvar"],
     "\\$[a-z]+": ["var"]
@@ -42,7 +42,7 @@ def tokenizeln(line):
         if match[1][0] == "function":
             tokenized.append([match[1][0], match[0].group()[:-1]])
             continue
-        if match[1][0] == "string":
+        if match[1][0] == "str":
             tokenized.append([match[1][0], match[0].group()[1:-1]])
             continue
         if match[1][0] == "int":

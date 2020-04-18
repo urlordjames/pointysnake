@@ -88,16 +88,26 @@ namespace makebin
                 if (splitline[2] == "int")
                 {
                     epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(int.Parse(splitline[3])));
-                    local = new Local(mod.CorLibTypes.Int32, splitline[1]);
+                    local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
                 }
-                if (splitline[2] == "string") {
+                if (splitline[2] == "str") {
                     epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(splitline[3]));
-                    local = new Local(mod.CorLibTypes.String, splitline[1]);
+                    local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
                 }
                 epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
                 return;
             }
             Console.WriteLine(line);
+        }
+
+        public static Local getvar(TypeSig type, String name, LocalList variables)
+        {
+            foreach (Local var in variables) {
+                if (var.Name == name) {
+                    return var;
+                }
+            }
+            return new Local(type, name);
         }
     }
 }
