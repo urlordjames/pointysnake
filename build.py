@@ -3,4 +3,8 @@
 import sys
 from precompile import psncompile
 
-psncompile(sys.argv[0])
+try:
+    psncompile(sys.argv[0])
+except Exception as e:
+    print(e)
+    exit(1)
