@@ -1,0 +1,16 @@
+version: 2.1
+jobs:
+    build:
+        docker:
+            - image: "mono"
+        steps:
+            - checkout
+            - run:
+                name: build
+                command: ./build.sh
+
+workflows:
+    version: 2
+    build:
+        jobs:
+            - build
