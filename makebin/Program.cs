@@ -2,6 +2,7 @@
 using System.IO;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
+using dnlib.DotNet.Writer;
 
 namespace makebin
 {
@@ -32,7 +33,9 @@ namespace makebin
             entryPoint.Body.OptimizeBranches();
             entryPoint.Body.OptimizeMacros();
             Console.WriteLine("done");
-            mod.Write("assembly.exe");
+            var options = new ModuleWriterOptions(mod);
+            options.PEHeadersOptions.Machine = dnlib.PE.Machine.AMD64;
+            mod.Write("executable.exe", options);
             #if DEBUG
             Console.WriteLine("press any key to close...");
             Console.ReadKey();
