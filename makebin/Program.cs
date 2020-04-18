@@ -91,7 +91,7 @@ namespace makebin
                     local = new Local(mod.CorLibTypes.Int32, splitline[1]);
                 }
                 if (splitline[2] == "string") {
-                    epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(int.Parse(splitline[3])));
+                    epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(splitline[3]));
                     local = new Local(mod.CorLibTypes.String, splitline[1]);
                 }
                 epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
