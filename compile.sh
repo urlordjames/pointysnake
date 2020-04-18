@@ -1,5 +1,5 @@
 #!/bin/sh
 
-python build.py $1
+python3 build.py $1
 mono makebin.exe
 echo "done"

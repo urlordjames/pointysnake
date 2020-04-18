@@ -9,8 +9,14 @@ jobs:
                 name: build
                 command: chmod +x build.sh && ./build.sh
             - run:
-                name: test
+                name: install python
+                command: apt-get update && apt-get install python3 -y
+            - run:
+                name: compile test
                 command: chmod +x compile.sh && ./compile.sh
+            - run:
+                name: execute test
+                command: mono executable.exe
 
 workflows:
     version: 2
