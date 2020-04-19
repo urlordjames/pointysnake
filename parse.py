@@ -20,6 +20,7 @@ def parseline(line):
             return ["call", line[0][1], [parseline(line[1][1])]]
         if line[1][0] == "var":
             return ["call", line[0][1], [["ldvar", line[1][1]]]]
+        return ["call", line[0][1], []]
     return -1
 
 if __name__ == "__main__":

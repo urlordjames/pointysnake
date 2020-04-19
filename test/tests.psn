@@ -22,5 +22,5 @@ var thirdvar = 2
 var variable = $thirdvar
 print($variable)
 
-#test of explicit return
-return(0)
+#test of explicit return and no argument function calls
+return()
