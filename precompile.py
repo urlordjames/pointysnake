@@ -18,6 +18,9 @@ def psncompile(filename):
                 if type(arg) == int:
                     f.write("ldint, " + str(arg) + "\n")
             argtype = str(type(arg).__name__)
+            if fname == "print":
+                f.write(line[0] + ", " + fname + "\n")
+                continue
             if argtype == "list":
                 fname += vartypes[arg[1]]
             else:

@@ -16,7 +16,7 @@ print($variable)
 var secondvar = "2"
 print($secondvar)
 
-#test of variable overwriting
-#this should print 29
-var variable = 29
+#test of variable overwriting and setting variables to other variables
+#this should print 2
+var variable = $secondvar
 print($variable)

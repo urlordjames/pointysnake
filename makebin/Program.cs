@@ -36,50 +36,39 @@ namespace makebin
             var options = new ModuleWriterOptions(mod);
             options.PEHeadersOptions.Machine = dnlib.PE.Machine.AMD64;
             mod.Write("executable.exe", options);
-            #if DEBUG
+#if DEBUG
             Console.WriteLine("press any key to close...");
             Console.ReadKey();
-            #endif
+#endif
         }
 
         public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody)
         {
-            String[] splitline = line.Split(new String[] {", "}, StringSplitOptions.None);
+            String[] splitline = line.Split(new String[] { ", " }, StringSplitOptions.None);
             if (splitline[0] == "ldstr")
             {
-                epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(splitline[1]));
+                ldstr(epBody, splitline[1]);
                 return;
             }
             if (splitline[0] == "ldint")
             {
-                epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(int.Parse(splitline[1])));
+                ldint(epBody, int.Parse(splitline[1]));
                 return;
             }
             if (splitline[0] == "call")
             {
-                if (splitline[1] == "printstr") {
-                    var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
-                    var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, mod.CorLibTypes.String), consoleRef);
-                    epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
-                }
-                if (splitline[1] == "printint")
+                if (splitline[1] == "print")
                 {
                     var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
-                    var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, mod.CorLibTypes.Int32), consoleRef);
+                    Type type = epBody.Instructions[epBody.Instructions.Count - 1].Operand.GetType();
+                    var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, gettypesig(mod, type)), consoleRef);
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
                 }
                 return;
             }
             if (splitline[0] == "ldvar")
             {
-                Local var = epBody.Variables[0];
-                int i = 0;
-                while (var.Name != splitline[1])
-                {
-                    i++;
-                    var = epBody.Variables[i];
-                }
-                epBody.Instructions.Add(OpCodes.Ldloc.ToInstruction(var));
+                ldvar(epBody, splitline[1]);
                 return;
             }
             if (splitline[0] == "setvar")
@@ -87,13 +76,19 @@ namespace makebin
                 Local local = null;
                 if (splitline[2] == "int")
                 {
-                    epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(int.Parse(splitline[3])));
+                    ldint(epBody, int.Parse(splitline[3]));
                     local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
                 }
                 if (splitline[2] == "str") {
-                    epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(splitline[3]));
+                    ldstr(epBody, splitline[3]);
                     local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
                 }
+                if (splitline[2] == "var")
+                {
+                    ldvar(epBody, splitline[3]);
+                    local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
+                }
+                
                 epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
                 return;
             }
@@ -108,6 +103,39 @@ namespace makebin
                 }
             }
             return new Local(type, name);
+        }
+
+        public static void ldvar(CilBody epBody, String name)
+        {
+            Local var = epBody.Variables[0];
+            int i = 0;
+            while (var.Name != name)
+            {
+                i++;
+                var = epBody.Variables[i];
+            }
+            epBody.Instructions.Add(OpCodes.Ldloc.ToInstruction(var));
+        }
+
+        public static void ldstr(CilBody epBody, String str)
+        {
+            epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(str));
+        }
+
+        public static void ldint(CilBody epBody, int integer)
+        {
+            epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(integer));
+        }
+
+        public static TypeSig gettypesig(ModuleDefUser mod, Type type) {
+            if (typeof(String) == type) {
+                return mod.CorLibTypes.String;
+            }
+            if (typeof(Int32) == type)
+            {
+                return mod.CorLibTypes.Int32;
+            }
+            return mod.CorLibTypes.Int32;
         }
     }
 }
