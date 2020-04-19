@@ -26,7 +26,7 @@ namespace makebin
             startUpType.Methods.Add(entryPoint);
             mod.EntryPoint = entryPoint;
             foreach (String line in file) {
-                WriteInstruction(line, mod, entryPoint.Body);
+                WriteInstruction(line, mod, entryPoint.Body, entryPoint);
             }
             entryPoint.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
             entryPoint.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
@@ -42,7 +42,7 @@ namespace makebin
 #endif
         }
 
-        public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody)
+        public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody, MethodDefUser method)
         {
             String[] splitline = line.Split(new String[] { ", " }, StringSplitOptions.None);
             if (splitline[0] == "ldstr")
@@ -60,8 +60,16 @@ namespace makebin
                 if (splitline[1] == "print")
                 {
                     var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
-                    Type type = epBody.Instructions[epBody.Instructions.Count - 1].Operand.GetType();
-                    var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, gettypesig(mod, type)), consoleRef);
+                    Instruction previous = epBody.Instructions[epBody.Instructions.Count - 1];
+                    TypeSig type = mod.CorLibTypes.Int32;
+                    if (previous.OpCode == OpCodes.Ldstr) {
+                        type = mod.CorLibTypes.String;
+                    }
+                    if (previous.IsLdloc())
+                    {
+                        type = previous.GetLocal(epBody.Variables).Type;
+                    }
+                    var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, type), consoleRef);
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
                 }
                 return;
@@ -125,17 +133,6 @@ namespace makebin
         public static void ldint(CilBody epBody, int integer)
         {
             epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(integer));
-        }
-
-        public static TypeSig gettypesig(ModuleDefUser mod, Type type) {
-            if (typeof(String) == type) {
-                return mod.CorLibTypes.String;
-            }
-            if (typeof(Int32) == type)
-            {
-                return mod.CorLibTypes.Int32;
-            }
-            return mod.CorLibTypes.Int32;
         }
     }
 }
