@@ -18,5 +18,6 @@ print($secondvar)
 
 #test of variable overwriting and setting variables to other variables
 #this should print 2
-var variable = $secondvar
+var thirdvar = 2
+var variable = $thirdvar
 print($variable)
