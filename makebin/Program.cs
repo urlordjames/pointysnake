@@ -28,8 +28,11 @@ namespace makebin
             foreach (String line in file) {
                 WriteInstruction(line, mod, entryPoint.Body, entryPoint);
             }
-            entryPoint.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
-            entryPoint.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+            if (epBody.Instructions[epBody.Instructions.Count - 1].OpCode != OpCodes.Ret)
+            {
+                entryPoint.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
+                entryPoint.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
+            }
             entryPoint.Body.OptimizeBranches();
             entryPoint.Body.OptimizeMacros();
             Console.WriteLine("done");
@@ -71,6 +74,18 @@ namespace makebin
                     }
                     var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, type), consoleRef);
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
+                    return;
+                }
+                if (splitline[1] == "returnint")
+                {
+                    epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
+                    return;
+                }
+                if (splitline[1] == "return")
+                {
+                    epBody.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
+                    epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
+                    return;
                 }
                 return;
             }
