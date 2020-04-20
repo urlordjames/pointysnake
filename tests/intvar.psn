@@ -1,0 +1,4 @@
+#test of integer variables
+#this should print 3
+var variable = 3
+print($variable)

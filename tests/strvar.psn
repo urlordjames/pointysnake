@@ -1,0 +1,4 @@
+#test of string variables
+#this should print 2
+var secondvar = "2"
+print($secondvar)

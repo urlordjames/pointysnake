@@ -14,13 +14,8 @@ jobs:
                 name: install python
                 command: apt-get update && apt-get install python3 -y
             - run:
-                name: compile test
-                command: chmod +x compile.sh && ./compile.sh test/tests.psn
-            - store_artifacts:
-                path: executable.exe
-            - run:
-                name: execute test
-                command: mono executable.exe
+                name: run tests
+                command: python3 tests.py
 
 workflows:
     version: 2
