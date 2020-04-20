@@ -12,6 +12,7 @@ namespace makebin
         {
             String[] file = File.ReadAllLines("precomp.psnbin");
             var mod = new ModuleDefUser("PointySnakeModule");
+            mod.RuntimeVersion = "4.0.0";
             mod.Kind = ModuleKind.Console;
             var asm = new AssemblyDefUser("PointySnakeAssembly");
             asm.Modules.Add(mod);
