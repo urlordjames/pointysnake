@@ -56,7 +56,6 @@ namespace makebin
             var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(mod.CorLibTypes.Int32));
             newfunction.Attributes = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
             newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed;
-            newfunction.ParamDefs.Add(new ParamDefUser("args", 1));
             startUpType.Methods.Add(newfunction);
             newfunction.Body = new CilBody();
             return newfunction;
@@ -112,6 +111,7 @@ namespace makebin
                     return;
                 }
                 epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
+                epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
                 return;
             }
             if (splitline[0] == "ldvar")
