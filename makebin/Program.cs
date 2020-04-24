@@ -40,6 +40,11 @@ namespace makebin
             var options = new ModuleWriterOptions(mod);
             options.PEHeadersOptions.Machine = dnlib.PE.Machine.AMD64;
             mod.Write("executable.exe", options);
+            awaitbutton();
+        }
+
+        public static void awaitbutton()
+        {
 #if DEBUG
             Console.WriteLine("press any key to close...");
             Console.ReadKey();
@@ -121,8 +126,9 @@ namespace makebin
                 epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
                 return;
             }
-            Console.Write("error: unknown intermediate instruction");
+            Console.WriteLine("error: unknown intermediate instruction");
             Console.WriteLine(line);
+            awaitbutton();
             Environment.Exit(1);
         }
 
