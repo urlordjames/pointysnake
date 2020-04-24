@@ -53,12 +53,18 @@ namespace makebin
         }
 
         public static MethodDef newfunc(ModuleDefUser mod, String name) {
-            var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(mod.CorLibTypes.Int32, new SZArraySig(mod.CorLibTypes.String)));
-            newfunction.Attributes = MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
+            var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(mod.CorLibTypes.Int32));
+            newfunction.Attributes = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
             newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed;
             newfunction.ParamDefs.Add(new ParamDefUser("args", 1));
             startUpType.Methods.Add(newfunction);
+            newfunction.Body = new CilBody();
             return newfunction;
+        }
+
+        public static MethodDef findfunc(String name)
+        {
+            return startUpType.FindMethod(name);
         }
 
         public static void awaitbutton()
@@ -100,17 +106,12 @@ namespace makebin
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
                     return;
                 }
-                if (splitline[1] == "returnint")
-                {
-                    epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
-                    return;
-                }
                 if (splitline[1] == "return")
                 {
-                    epBody.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
                     epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
                     return;
                 }
+                epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
                 return;
             }
             if (splitline[0] == "ldvar")

@@ -17,14 +17,11 @@ def psncompile(filename):
                     f.write("ldstr, " + arg + "\n")
                 if type(arg) == int:
                     f.write("ldint, " + str(arg) + "\n")
-            argtype = str(type(arg).__name__)
-            if fname == "print":
+            if fname == "return":
+                if line[2] == []:
+                    f.write("ldint, 0\n")
                 f.write(line[0] + ", " + fname + "\n")
                 continue
-            if argtype == "list":
-                fname += vartypes[arg[1]]
-            else:
-                fname += argtype
             f.write(line[0] + ", " + fname + "\n")
         elif line[0] == "setvar":
             vartypes[line[2]] = line[1]
@@ -36,4 +33,4 @@ def psncompile(filename):
     f.close()
 
 if __name__ == "__main__":
-    psncompile("tests/printstr.psn")
+    psncompile("tests/function.psn")
