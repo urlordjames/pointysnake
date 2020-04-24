@@ -21,16 +21,16 @@ def lex(filename):
 import re
 
 tokens = {
-    "function": ["functiondefine"],
-    "{": ["functionstart"],
-    "}": ["functionterminate"],
-    "[a-z]+\\(": ["function"],
-    "\\d+": ["int"],
-    "\".*\"": ["str"],
-    "\\)": ["functionend"],
-    "var [a-zA-Z]+ = ": ["setvar"],
-    "true|false": ["bool"],
-    " ": ["ignore"]
+    "^function$": ["functiondefine"],
+    "^{$": ["functionstart"],
+    "^}$": ["functionterminate"],
+    "^[a-z]+\\($": ["function"],
+    "^\\d+$": ["int"],
+    "^\".*\"$": ["str"],
+    "^\\)$": ["functionend"],
+    "^var [a-zA-Z]+ = $": ["setvar"],
+    "^true|false$": ["bool"],
+    "^ $": ["ignore"]
 }
 
 def tokenizeln(line):
