@@ -44,10 +44,10 @@ namespace makebin
         }
 
         public static ModuleDefUser newmod(String name) {
-            var mod = new ModuleDefUser();
-            mod.RuntimeVersion = "v4.4";
+            var mod = new ModuleDefUser(name);
+            mod.RuntimeVersion = "v4.0.30319";
             mod.Kind = ModuleKind.Console;
-            var asm = new AssemblyDefUser("PointySnakeAssembly");
+            var asm = new AssemblyDefUser("PointySnakeAssembly", new Version(0, 0, 0, 0), null, "en_us");
             asm.Modules.Add(mod);
             return mod;
         }
