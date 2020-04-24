@@ -52,7 +52,7 @@ def tokenizeln(line):
             tokenized.append([match[1][0], int(match[0].group())])
             continue
         if match[1][0] == "var":
-            tokenized.append([match[1][0], match[0].group()[1:]])
+            tokenized.append([match[1][0], match[0].group()[1:-1]])
             continue
         if match[1][0] == "setvar":
             tokenized.append([match[1][0], match[0].group()[4:-3]])
