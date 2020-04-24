@@ -1,0 +1,4 @@
+#test of bool values
+#should print true
+var good = true
+print(good)
