@@ -22,7 +22,7 @@ import re
 
 tokens = {
     "[a-z]+\\(": ["function"],
-    "[0-9]+": ["int"],
+    "\\d+": ["int"],
     "\".*\"": ["str"],
     "\\)": ["functionend"],
     "var [a-zA-Z]+ = ": ["setvar"]
