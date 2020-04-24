@@ -107,6 +107,11 @@ namespace makebin
                     ldstr(epBody, splitline[3]);
                     local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
                 }
+                if (splitline[2] == "bool")
+                {
+                    ldbool(epBody, splitline[3]);
+                    local = getvar(mod.CorLibTypes.Boolean, splitline[1], epBody.Variables);
+                }
                 if (splitline[2] == "var")
                 {
                     ldvar(epBody, splitline[3]);
@@ -149,6 +154,16 @@ namespace makebin
         public static void ldint(CilBody epBody, int integer)
         {
             epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(integer));
+        }
+
+        public static void ldbool(CilBody epBody, string boolean)
+        {
+            if (boolean == "true") {
+                epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(1));
+            } else {
+                epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(0));
+            }
+            
         }
     }
 }
