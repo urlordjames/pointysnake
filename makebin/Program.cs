@@ -121,7 +121,9 @@ namespace makebin
                 epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
                 return;
             }
+            Console.Write("error: unknown intermediate instruction");
             Console.WriteLine(line);
+            Environment.Exit(1);
         }
 
         public static Local getvar(TypeSig type, String name, LocalList variables)
