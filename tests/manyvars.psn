@@ -6,8 +6,8 @@ var three = 3
 var four = 4
 var five = 5
 
-print($one)
-print($two)
-print($three)
-print($four)
-print($five)
+print($one$)
+print($two$)
+print($three$)
+print($four$)
+print($five$)

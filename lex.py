@@ -26,7 +26,7 @@ tokens = {
     "\".*\"": ["str"],
     "\\)": ["functionend"],
     "var [a-zA-Z]+ = ": ["setvar"],
-    "\\$[a-zA-Z]+": ["var"]
+    "\\$[a-zA-Z]+\\$": ["var"]
 }
 
 def tokenizeln(line):
