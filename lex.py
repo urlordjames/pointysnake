@@ -37,8 +37,9 @@ def tokenizeln(line):
         for token in tokens.keys():
             match = re.search(token, buffer)
             if not match == None:
-                matches.append(match)
+                matches.append([match, tokens[token]])
                 buffer = ""
+                continue
     tokenized = []
     for match in matches:
         if match[1][0] == "function":
