@@ -30,13 +30,15 @@ tokens = {
 }
 
 def tokenizeln(line):
+    buffer = ""
     matches = []
-    for token in tokens.keys():
-        result = re.search(token, line)
-        if result == None:
-            continue
-        matches.append([result, tokens[token]])
-    matches = sorted(matches, key=lambda match: match[0].span()[0])
+    for char in line:
+        buffer += char
+        for token in tokens.keys():
+            match = re.search(token, buffer)
+            if not match == None:
+                matches.append(match)
+                buffer = ""
     tokenized = []
     for match in matches:
         if match[1][0] == "function":
