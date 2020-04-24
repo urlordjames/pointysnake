@@ -29,6 +29,10 @@ def psncompile(filename):
         elif line[0] == "setvar":
             vartypes[line[2]] = line[1]
             f.write("setvar, " + line[2] + ", " + line[1] + ", " + str(line[3]) + "\n")
+        elif line[0] == "newfunc":
+            f.write("newfunc, " + line[1] + "\n")
+        elif line[0] == "endfunc":
+            f.write("endfunc\n")
     f.close()
 
 if __name__ == "__main__":

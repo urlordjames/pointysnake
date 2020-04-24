@@ -1,0 +1,8 @@
+#test of functions
+#should return 0
+function dog() {
+    return(0)
+}
+
+dog()
+return()
