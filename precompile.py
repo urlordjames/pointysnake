@@ -33,4 +33,4 @@ def psncompile(filename):
     f.close()
 
 if __name__ == "__main__":
-    psncompile("tests/function.psn")
+    psncompile("tests/printstr.psn")

@@ -45,7 +45,7 @@ namespace makebin
 
         public static ModuleDefUser newmod(String name) {
             var mod = new ModuleDefUser();
-            mod.RuntimeVersion = "v4.0.30319";
+            mod.RuntimeVersion = "v4.4";
             mod.Kind = ModuleKind.Console;
             var asm = new AssemblyDefUser("PointySnakeAssembly");
             asm.Modules.Add(mod);
