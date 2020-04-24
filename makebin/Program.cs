@@ -8,17 +8,16 @@ namespace makebin
 {
     class Program
     {
+        public static MethodDef currentfunc = null;
+        public static TypeDefUser startUpType = null;
+
         static void Main(string[] args)
         {
             String[] file = File.ReadAllLines("precomp.psnbin");
-            var mod = new ModuleDefUser("PointySnakeModule");
-            mod.RuntimeVersion = "v4.0.30319";
-            mod.Kind = ModuleKind.Console;
-            var asm = new AssemblyDefUser("PointySnakeAssembly");
-            asm.Modules.Add(mod);
-            var startUpType = new TypeDefUser("PointySnake", "Program", mod.CorLibTypes.Object.TypeDefOrRef);
-            mod.Types.Add(startUpType);
+            var mod = newmod("PointySnakeModule");
             var entryPoint = new MethodDefUser("Main", MethodSig.CreateStatic(mod.CorLibTypes.Int32, new SZArraySig(mod.CorLibTypes.String)));
+            startUpType = new TypeDefUser("PointySnake", "Program", mod.CorLibTypes.Object.TypeDefOrRef);
+            mod.Types.Add(startUpType);
             entryPoint.Attributes = MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
             entryPoint.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed;
             entryPoint.ParamDefs.Add(new ParamDefUser("args", 1));
@@ -26,8 +25,9 @@ namespace makebin
             entryPoint.Body = epBody;
             startUpType.Methods.Add(entryPoint);
             mod.EntryPoint = entryPoint;
+            currentfunc = mod.EntryPoint;
             foreach (String line in file) {
-                WriteInstruction(line, mod, entryPoint.Body, entryPoint);
+                WriteInstruction(line, mod, currentfunc.Body);
             }
             if (epBody.Instructions[epBody.Instructions.Count - 1].OpCode != OpCodes.Ret)
             {
@@ -43,6 +43,24 @@ namespace makebin
             awaitbutton();
         }
 
+        public static ModuleDefUser newmod(String name) {
+            var mod = new ModuleDefUser();
+            mod.RuntimeVersion = "v4.0.30319";
+            mod.Kind = ModuleKind.Console;
+            var asm = new AssemblyDefUser("PointySnakeAssembly");
+            asm.Modules.Add(mod);
+            return mod;
+        }
+
+        public static MethodDef newfunc(ModuleDefUser mod, String name) {
+            var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(mod.CorLibTypes.Int32, new SZArraySig(mod.CorLibTypes.String)));
+            newfunction.Attributes = MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
+            newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed;
+            newfunction.ParamDefs.Add(new ParamDefUser("args", 1));
+            startUpType.Methods.Add(newfunction);
+            return newfunction;
+        }
+
         public static void awaitbutton()
         {
 #if DEBUG
@@ -51,7 +69,7 @@ namespace makebin
 #endif
         }
 
-        public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody, MethodDefUser method)
+        public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody)
         {
             String[] splitline = line.Split(new String[] { ", " }, StringSplitOptions.None);
             if (splitline[0] == "ldstr")
@@ -124,6 +142,16 @@ namespace makebin
                 }
                 
                 epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
+                return;
+            }
+            if (splitline[0] == "newfunc")
+            {
+                currentfunc = newfunc(mod, splitline[1]);
+                return;
+            }
+            if (splitline[0] == "endfunc")
+            {
+                currentfunc = mod.EntryPoint;
                 return;
             }
             Console.WriteLine("error: unknown intermediate instruction");
