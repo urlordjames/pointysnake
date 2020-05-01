@@ -1,8 +1,7 @@
-#test of functions
-#should return 0
+#test of function returns
+#should print 8
 function dog() {
-    return(0)
+    return(8)
 }
 
-dog()
-return()
+print(dog())
