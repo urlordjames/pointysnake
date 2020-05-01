@@ -97,6 +97,13 @@ namespace makebin
                     if (previous.OpCode == OpCodes.Ldstr) {
                         type = mod.CorLibTypes.String;
                     }
+                    if (previous.OpCode == OpCodes.Call) {
+                        object operand = previous.GetOperand();
+                        if (operand != null && operand is MethodDefUser) {
+                            MethodDefUser method = (MethodDefUser) operand;
+                            type = method.ReturnType;
+                        }
+                    }
                     if (previous.IsLdloc())
                     {
                         type = previous.GetLocal(epBody.Variables).Type;
