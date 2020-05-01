@@ -8,10 +8,13 @@ os.system("chmod +x compile.sh")
 
 for test in tests:
     print(test)
-    os.system("./compile.sh ./tests/" + test)
-    executable = subprocess.call(["mono", "executable.exe"])
+    run(["./compile.sh", "./tests/", test])
+    run(["mono", "executable.exe"])
+    run(["rm", "executable.exe"])
+
+def run(command):
+    executable = subprocess.call(command)
     if not executable == 0:
         sys.exit(executable)
-    os.system("rm executable.exe")
 
 print("done")
