@@ -13,7 +13,7 @@ def runcmd(command):
 
 for test in tests:
     print(test)
-    runcmd(["./compile.sh", "./tests/", test])
+    runcmd(["./compile.sh", "./tests/" + test])
     runcmd(["mono", "executable.exe"])
     runcmd(["rm", "executable.exe"])
 
