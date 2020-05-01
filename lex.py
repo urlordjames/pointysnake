@@ -30,7 +30,7 @@ tokens = {
     "^\\)$": ["functionend"],
     "^var [a-zA-Z]+ = $": ["setvar"],
     "^true|false$": ["bool"],
-    "^ $": ["ignore"]
+    "^[ |\t]$": ["ignore"]
 }
 
 def tokenizeln(line):

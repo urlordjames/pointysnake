@@ -1,4 +1,6 @@
 #test of calling many functions with a pretty long callstack
+#also unintentionally a test of ignoring \t
+#should print 7
 
 function cheese() {
 	return(7)
