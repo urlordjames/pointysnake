@@ -1,0 +1,15 @@
+#test of calling many functions with a pretty long callstack
+
+function cheese() {
+	return(7)
+}
+
+function gorg() {
+	return(cheese())
+}
+
+function bruh() {
+	return(gorg())
+}
+
+print(bruh())
