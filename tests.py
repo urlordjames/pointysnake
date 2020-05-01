@@ -6,15 +6,15 @@ print("running tests...")
 
 os.system("chmod +x compile.sh")
 
-for test in tests:
-    print(test)
-    run(["./compile.sh", "./tests/", test])
-    run(["mono", "executable.exe"])
-    run(["rm", "executable.exe"])
-
-def run(command):
+def runcmd(command):
     executable = subprocess.call(command)
     if not executable == 0:
         sys.exit(executable)
+
+for test in tests:
+    print(test)
+    runcmd(["./compile.sh", "./tests/", test])
+    runcmd(["mono", "executable.exe"])
+    runcmd(["rm", "executable.exe"])
 
 print("done")
