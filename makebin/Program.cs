@@ -111,7 +111,6 @@ namespace makebin
                     return;
                 }
                 epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
-                epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
                 return;
             }
             if (splitline[0] == "ldvar")

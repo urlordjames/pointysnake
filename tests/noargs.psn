@@ -1,0 +1,3 @@
+#test of functions with no arguments
+#should return 0
+return()
