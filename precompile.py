@@ -11,7 +11,11 @@ def psncompile(filename):
             resolvecall(line, f)
         elif line[0] == "setvar":
             vartypes[line[2]] = line[1]
-            f.write("setvar, " + line[2] + ", " + line[1] + ", " + str(line[3]) + "\n")
+            if type(line[3]) == list:
+                resolvecall(line[3], f)
+                f.write("setvar, " + line[2] + ", " + line[1] + ", pop\n")
+            else:
+                f.write("setvar, " + line[2] + ", " + line[1] + ", " + str(line[3]) + "\n")
         elif line[0] == "newfunc":
             f.write("newfunc, " + line[1] + "\n")
         elif line[0] == "endfunc":

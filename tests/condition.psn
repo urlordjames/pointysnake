@@ -5,5 +5,5 @@ function exec() {
     return(0)
 }
 
-var execute = true
+var execute = eq(1, 1)
 cond execute|exec()

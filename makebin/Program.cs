@@ -145,7 +145,9 @@ namespace makebin
                 Local local = null;
                 if (splitline[2] == "int")
                 {
-                    ldint(epBody, int.Parse(splitline[3]));
+                    if (splitline[3] != "pop") {
+                        ldint(epBody, int.Parse(splitline[3]));
+                    }
                     local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
                 }
                 if (splitline[2] == "str") {
@@ -162,7 +164,6 @@ namespace makebin
                     ldvar(epBody, splitline[3]);
                     local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
                 }
-                
                 epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
                 return;
             }
