@@ -118,6 +118,7 @@ namespace makebin
                     return;
                 }
                 epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
+                epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
                 return;
             }
             if (splitline[0] == "ldvar")
@@ -159,6 +160,19 @@ namespace makebin
             if (splitline[0] == "endfunc")
             {
                 currentfunc = mod.EntryPoint;
+                return;
+            }
+            if (splitline[0] == "cond")
+            {
+                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                int placeholder = epBody.Instructions.Count - 1;
+                epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
+                epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
+                //wasted instruction, fix potentially
+                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                int blockend = epBody.Instructions.Count - 1;
+                epBody.Instructions[placeholder] = (OpCodes.Brfalse.ToInstruction(epBody.Instructions[blockend]));
+                Console.WriteLine("chorg");
                 return;
             }
             Console.WriteLine("error: unknown intermediate instruction");
