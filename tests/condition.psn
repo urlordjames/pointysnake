@@ -1,0 +1,9 @@
+#test of conditional execution
+#should print 3
+function exec() {
+    print(3)
+    return(0)
+}
+
+var execute = true
+cond execute|exec()

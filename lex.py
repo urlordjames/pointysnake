@@ -22,6 +22,8 @@ import re
 
 tokens = {
     "^function$": ["functiondefine"],
+    "^cond$": ["conddefine"],
+    "^\|$": ["condseperate"],
     "^{$": ["functionstart"],
     "^}$": ["functionterminate"],
     "^[a-z]+\\($": ["function"],

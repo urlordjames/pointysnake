@@ -27,6 +27,8 @@ def parseline(line):
         if line[1][0] == "var":
             return ["call", line[0][1], [["ldvar", line[1][1]]]]
         return ["call", line[0][1], []]
+    if line[0][0] == "conddefine":
+        return ["cond", line[1], line[3]]
     return -1
 
 if __name__ == "__main__":

@@ -16,6 +16,8 @@ def psncompile(filename):
             f.write("newfunc, " + line[1] + "\n")
         elif line[0] == "endfunc":
             f.write("endfunc\n")
+        elif line[0] == "cond":
+            f.write(line[0] + ", " + line[1][1] + ", " + line[2][1])
     f.close()
 
 def resolvecall(line, f):
