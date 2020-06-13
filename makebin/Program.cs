@@ -117,6 +117,11 @@ namespace makebin
                     epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
                     return;
                 }
+                if (splitline[1] == "add")
+                {
+                    epBody.Instructions.Add(OpCodes.Add.ToInstruction());
+                    return;
+                }
                 epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
                 return;
             }
@@ -166,6 +171,7 @@ namespace makebin
                 epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                 int placeholder = epBody.Instructions.Count - 1;
                 epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
+                epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
                 //wasted instruction, fix potentially
                 epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                 int blockend = epBody.Instructions.Count - 1;
