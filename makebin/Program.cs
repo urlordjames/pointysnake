@@ -122,6 +122,16 @@ namespace makebin
                     epBody.Instructions.Add(OpCodes.Add.ToInstruction());
                     return;
                 }
+                if (splitline[1] == "sub")
+                {
+                    epBody.Instructions.Add(OpCodes.Sub.ToInstruction());
+                    return;
+                }
+                if (splitline[1] == "eq")
+                {
+                    epBody.Instructions.Add(OpCodes.Ceq.ToInstruction());
+                    return;
+                }
                 epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
                 return;
             }
