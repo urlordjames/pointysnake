@@ -29,6 +29,9 @@ def resolvecall(line, f):
                 f.write("ldvar, " + arg[1] + "\n")
             if arg[0] == "call":
                 resolvecall(line[2][0], f)
+            if type(arg[0]) == list:
+                for value in arg:
+                    f.write("ldvar, " + str(value[1]) + "\n")
         if type(arg) == str:
             f.write("ldstr, " + arg + "\n")
         if type(arg) == int:

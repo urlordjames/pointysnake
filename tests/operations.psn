@@ -1,0 +1,3 @@
+#test of operations
+#should print 7
+print(add(3, 4))
