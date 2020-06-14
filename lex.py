@@ -23,6 +23,7 @@ import re
 tokens = {
     "^function$": ["functiondefine"],
     "^cond$": ["conddefine"],
+    "^assert$": ["assert"],
     "^\|$": ["condseperate"],
     "^{$": ["functionstart"],
     "^}$": ["functionterminate"],

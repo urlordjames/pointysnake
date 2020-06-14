@@ -23,6 +23,9 @@ def psncompile(filename):
         elif line[0] == "cond":
             f.write("ldvar, " + line[1][1] + "\n")
             f.write(line[0] + ", " + line[2][1] + "\n")
+        elif line[0] == "assert":
+            f.write("ldvar, " + line[1][1] + "\n")
+            f.write(line[0] + "\n")
     f.close()
 
 def resolvecall(line, f):

@@ -187,7 +187,18 @@ namespace makebin
                 epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                 int blockend = epBody.Instructions.Count - 1;
                 epBody.Instructions[placeholder] = (OpCodes.Brfalse.ToInstruction(epBody.Instructions[blockend]));
-                Console.WriteLine("chorg");
+                return;
+            }
+            if (splitline[0] == "assert")
+            {
+                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                int placeholder = epBody.Instructions.Count - 1;
+                epBody.Instructions.Add(OpCodes.Ldc_I4_1.ToInstruction());
+                epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
+                //wasted instruction (again)
+                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                int blockend = epBody.Instructions.Count - 1;
+                epBody.Instructions[placeholder] = (OpCodes.Brtrue.ToInstruction(epBody.Instructions[blockend]));
                 return;
             }
             Console.WriteLine("error: unknown intermediate instruction");

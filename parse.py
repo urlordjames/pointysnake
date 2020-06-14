@@ -40,6 +40,8 @@ def parseline(line):
         return ["call", line[0][1], []]
     if line[0][0] == "conddefine":
         return ["cond", line[1], line[3]]
+    if line[0][0] == "assert":
+        return [line[0][0], line[1]]
     return -1
 
 if __name__ == "__main__":

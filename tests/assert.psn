@@ -1,0 +1,4 @@
+#test of assertions
+#should return 0
+var good = true
+assert good
