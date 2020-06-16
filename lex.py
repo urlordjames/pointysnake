@@ -59,7 +59,12 @@ def tokenizeln(line):
             tokenized.append([match[1][0], match[0].group()[1:-1]])
             continue
         if match[1][0] == "int":
-            tokenized.append([match[1][0], int(match[0].group())])
+            #this is ugly and disgusting and needs to be fixed later maybe
+            previoustoken = tokenized[len(tokenized) - 1]
+            if previoustoken[0] == "int":
+                previoustoken[1] = int(str(previoustoken[1]) + str(match[0].group()))
+            else:
+                tokenized.append([match[1][0], int(match[0].group())])
             continue
         if match[1][0] == "bool":
             tokenized.append([match[1][0], match[0].group()])
@@ -76,4 +81,4 @@ def tokenizeln(line):
     return tokenized
 
 if __name__ == "__main__":
-    print(lex("tests/printstr.psn"))
+    print(lex("tests/printint.psn"))
