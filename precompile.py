@@ -22,6 +22,12 @@ def psncompile(filename):
             f.write("endfunc\n")
         elif line[0] == "cond":
             f.write("ldvar, " + line[1][1] + "\n")
+            #this line causes unpredictable errors in CI????
+            #I can't reproduce this on my setup so I just have to wait
+            #I'm going to add a dumb print statement for the whole line
+            #I hate circleci
+            #TODO: investigate
+            print(line)
             f.write(line[0] + ", " + line[2][1] + "\n")
         elif line[0] == "assert":
             f.write("ldvar, " + line[1][1] + "\n")
