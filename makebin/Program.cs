@@ -23,6 +23,7 @@ namespace makebin
             entryPoint.ParamDefs.Add(new ParamDefUser("args", 1));
             var epBody = new CilBody();
             entryPoint.Body = epBody;
+            startUpType.Attributes = TypeAttributes.Public;
             startUpType.Methods.Add(entryPoint);
             mod.EntryPoint = entryPoint;
             currentfunc = mod.EntryPoint;
