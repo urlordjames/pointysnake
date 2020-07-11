@@ -1,0 +1,25 @@
+name: "build and test"
+
+on: ["push"]
+
+jobs:
+    build:
+        runs-on: "ubuntu-latest"
+        container: "mono"
+
+        steps:
+        - uses: "actions/checkout@v2"
+
+        - name: "build"
+          run: "chmod +x build.sh && ./build.sh"
+
+        - uses: "actions/upload-artifact@v2"
+          with:
+            name: "compiler"
+            path: "makebin.exe"
+
+        - name: "install python"
+          run: "apt-get update && apt-get install python3 -y"
+
+        - name: "run tests"
+          run: "python3 tests.py"
