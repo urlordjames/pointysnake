@@ -19,6 +19,10 @@ jobs:
             path: "makebin.exe"
 
     test:
+        needs: build
+        runs-on: "ubuntu-latest"
+        container: "mono"
+
         - name: "install python"
           run: "apt-get update && apt-get install python3 -y"
 
