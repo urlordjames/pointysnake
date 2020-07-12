@@ -58,7 +58,7 @@ def resolvecall(line, f):
     f.write(line[0] + ", " + fname + "\n")
 
 def resolvevar(variable, f):
-    if variable[0] == "var":
+    if variable[0] == "ldvar":
         f.write("ldvar, " + variable[1] + "\n")
     else:
         staticinfo = staticvars[variable[1]]
