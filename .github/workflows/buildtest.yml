@@ -26,7 +26,7 @@ jobs:
       - uses: "actions/checkout@v2"
 
       - name: "run tests"
-        run: "python3 tests.py"
+        run: "python3 precomptests.py"
         
       - uses: "actions/upload-artifact@v2"
         with:
@@ -44,6 +44,10 @@ jobs:
       - uses: "actions/download-artifact@v2"
         with:
           name: "precomp"
+          path: "./precompiled/"
 
       - name: "test"
         run: "ls -Rlh"
+
+      - name: "compile and run tests"
+        run: "chmod +x runtests.sh && ./runtests.sh"

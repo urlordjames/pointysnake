@@ -2,9 +2,8 @@ import os
 import subprocess
 import sys
 tests = os.listdir("./tests/")
-print("running tests...")
+print("precompiling tests...")
 
-os.system("chmod +x compile.sh")
 os.system("mkdir precompiled")
 
 def runcmd(command):
