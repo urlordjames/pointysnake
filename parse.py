@@ -41,7 +41,7 @@ def parseline(line):
         if line[1][0] == "function":
             return ["call", line[0][1], [parseline(line[1:-1])]]
         if line[1][0] == "var":
-            return ["call", line[0][1], [["ldvar", line[1][1]]]]
+            return ["call", line[0][1], [["var", line[1][1]]]]
         if line[1][0] == "staticvar":
             return ["call", line[0][1], [["ldstaticvar", line[1][1]]]]
         return ["call", line[0][1], []]
