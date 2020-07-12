@@ -1,5 +1,7 @@
 from lex import lex
 
+validargs = ["str", "int", "var", "staticvar"]
+
 def parse(filename):
     lexed = lex(filename)
 
@@ -13,7 +15,7 @@ def parse(filename):
 def parseline(line):
     if type(line) == str or type(line) == int:
         return line
-    if line[0][0] == "str" or line[0][0] == "int":
+    if line[0][0] in validargs:
         if len(line) > 1:
             buffer = []
             for arg in line:
@@ -36,15 +38,10 @@ def parseline(line):
             return -1
         return [line[0][0], line[1][0], line[0][1], parseline(line[1][1])]
     if line[0][0] == "function":
-        if line[1][0] == "str" or line[1][0] == "int":
+        if line[1][0] == "functionend":
+            return ["call", line[0][1], []]
+        else:
             return ["call", line[0][1], [parseline(line[1:-1])]]
-        if line[1][0] == "function":
-            return ["call", line[0][1], [parseline(line[1:-1])]]
-        if line[1][0] == "var":
-            return ["call", line[0][1], [["var", line[1][1]]]]
-        if line[1][0] == "staticvar":
-            return ["call", line[0][1], [["staticvar", line[1][1]]]]
-        return ["call", line[0][1], []]
     if line[0][0] == "conddefine":
         return ["cond", line[1], line[3]]
     if line[0][0] == "assert":
