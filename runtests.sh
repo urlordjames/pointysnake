@@ -10,7 +10,7 @@ for f in ./precompiled/*.psnbin; do
         echo "test passed"
     else
         echo "test failed"
-    exit 1
+        exit 1
     fi
 done
 
