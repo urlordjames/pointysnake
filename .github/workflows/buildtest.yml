@@ -46,8 +46,9 @@ jobs:
           name: "precomp"
           path: "./precompiled/"
 
-      - name: "test"
-        run: "ls -Rlh"
+      - uses: "actions/download-artifact@v2"
+        with:
+          name: "compiler"
 
       - name: "compile and run tests"
         run: "chmod +x runtests.sh && ./runtests.sh"
