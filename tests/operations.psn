@@ -1,6 +1,5 @@
 #test of operations
 #should print 7
 var addition = add(3, 4)
-#TODO: figure out why "eq(addition, 7)" doesn't work...
-var good = eq(7, addition)
+var good = eq(addition, 7)
 assert good
