@@ -1,7 +1,9 @@
-#test of function returns
-#should print 8
+#test of function stuff
+#should return 0
 function dog() {
     return(8)
 }
 
-print(dog())
+var good = eq(dog(), 8)
+
+assert good
