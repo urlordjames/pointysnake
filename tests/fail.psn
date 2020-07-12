@@ -1,3 +1,0 @@
-#test of CI
-#should fail CI
-return(1)

@@ -30,7 +30,7 @@ jobs:
       steps:
       - uses: "actions/checkout@v2"
 
-      - name: "run tests"
+      - name: "precompile tests"
         run: "python3 precomptests.py"
         
       - uses: "actions/upload-artifact@v2"
