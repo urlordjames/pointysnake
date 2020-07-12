@@ -30,6 +30,11 @@ def parseline(line):
         if line[1][0] == "function":
             return [line[0][0], "int", line[0][1], parseline(line[1:])]
         return [line[0][0], line[1][0], line[0][1], parseline(line[1][1])]
+    if line[0][0] == "setstaticvar":
+        if line[1][0] == "function":
+            print("error: staticvar cannot be set as returned value from function")
+            return -1
+        return [line[0][0], line[1][0], line[0][1], parseline(line[1][1])]
     if line[0][0] == "function":
         if line[1][0] == "str" or line[1][0] == "int":
             return ["call", line[0][1], [parseline(line[1:-1])]]
@@ -37,6 +42,8 @@ def parseline(line):
             return ["call", line[0][1], [parseline(line[1:-1])]]
         if line[1][0] == "var":
             return ["call", line[0][1], [["ldvar", line[1][1]]]]
+        if line[1][0] == "staticvar":
+            return ["call", line[0][1], [["ldstaticvar", line[1][1]]]]
         return ["call", line[0][1], []]
     if line[0][0] == "conddefine":
         return ["cond", line[1], line[3]]

@@ -33,6 +33,7 @@ tokens = {
     "^\".*\"$": ["str"],
     "^\\)$": ["functionend"],
     "^var [a-zA-Z]+ = $": ["setvar"],
+    "^staticvar [a-zA-Z]+ = $": ["setstaticvar"],
     "^true|false$": ["bool"],
     "^[ |\t]$": ["ignore"]
 }
@@ -77,6 +78,11 @@ def tokenizeln(line):
             varname = match[0].group()[4:-3]
             tokenized.append([match[1][0], varname])
             tokens.update({varname: ["var", varname]})
+            continue
+        if match[1][0] == "setstaticvar":
+            varname = match[0].group()[10:-3]
+            tokenized.append([match[1][0], varname])
+            tokens.update({varname: ["staticvar", varname]})
             continue
         tokenized.append(match[1])
     return tokenized
