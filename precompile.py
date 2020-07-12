@@ -36,7 +36,7 @@ def resolvecall(line, f):
     fname = line[1]
     for arg in line[2]:
         if type(arg) == list:
-            if arg[0] == "ldvar" or arg[0] == "ldstaticvar":
+            if arg[0] == "var" or arg[0] == "staticvar":
                 resolvevar(arg, f)
             if arg[0] == "call":
                 resolvecall(line[2][0], f)
@@ -65,4 +65,4 @@ def resolvevar(variable, f):
         f.write("ld" + staticinfo[0] + ", " + str(staticinfo[1]) + "\n")
 
 if __name__ == "__main__":
-    psncompile("tests/printstr.psn")
+    psncompile("tests/intvar.psn")
