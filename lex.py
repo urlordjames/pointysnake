@@ -77,12 +77,12 @@ def tokenizeln(line):
         if match[1][0] == "setvar":
             varname = match[0].group()[4:-3]
             tokenized.append([match[1][0], varname])
-            tokens.update({varname: ["var", varname]})
+            tokens.update({f"^{varname}$": ["var", varname]})
             continue
         if match[1][0] == "setstaticvar":
             varname = match[0].group()[10:-3]
             tokenized.append([match[1][0], varname])
-            tokens.update({varname: ["staticvar", varname]})
+            tokens.update({f"^{varname}$": ["staticvar", varname]})
             continue
         tokenized.append(match[1])
     return tokenized
