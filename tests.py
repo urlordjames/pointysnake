@@ -5,6 +5,7 @@ tests = os.listdir("./tests/")
 print("running tests...")
 
 os.system("chmod +x compile.sh")
+os.system("mkdir precompiled")
 
 def runcmd(command):
     executable = subprocess.call(command)
@@ -14,7 +15,6 @@ def runcmd(command):
 for test in tests:
     print(test)
     runcmd(["./compile.sh", "./tests/" + test])
-    runcmd(["mono", "executable.exe"])
-    runcmd(["rm", "executable.exe"])
+    runcmd(["cp", "precomp.psnbin", "precompiled/" + test + ".psnbin"])
 
 print("done")

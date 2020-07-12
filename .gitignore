@@ -128,8 +128,14 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# compiler builds
 makebin/bin
 makebin/obj
 makebin/packages
 makebin/.vs
+
+# precompiled script
 precomp.psnbin
+
+# precompiled test scripts folder
+precompiled

@@ -3,23 +3,47 @@ name: "build and test"
 on: ["push"]
 
 jobs:
-    build-and-test:
-        runs-on: "ubuntu-latest"
-        container: "mono"
+    build-compiler:
+      runs-on: "ubuntu-latest"
+      container: "mono"
 
-        steps:
-        - uses: "actions/checkout@v2"
+      steps:
+      - uses: "actions/checkout@v2"
 
-        - name: "build"
-          run: "chmod +x build.sh && ./build.sh"
+      - name: "build"
+        run: "chmod +x build.sh && ./build.sh"
 
-        - uses: "actions/upload-artifact@v2"
-          with:
-            name: "compiler"
-            path: "makebin.exe"
+      - uses: "actions/upload-artifact@v2"
+        with:
+          name: "compiler"
+          path: "makebin.exe"
 
-        - name: "install python"
-          run: "apt-get update && apt-get install python3 -y"
+    precompile-tests:
+      runs-on: "ubuntu-latest"
+      container: "python:3.7"
 
-        - name: "run tests"
-          run: "python3 tests.py"
+      steps:
+      - uses: "actions/checkout@v2"
+
+      - name: "run tests"
+        run: "python3 tests.py"
+        
+      - uses: "actions/upload-artifact@v2"
+        with:
+          name: "precomp"
+          path: "precompiled/"
+
+    compile-run-tests:
+      needs: ["build-compiler", precompile-tests]
+      runs-on: "ubuntu-latest"
+      container: "mono"
+
+      steps:
+      - uses: "actions/checkout@v2"
+
+      - uses: "actions/download-artifact@v2"
+        with:
+          name: "precomp"
+
+      - name: "test"
+        run: "ls -Rlh"
