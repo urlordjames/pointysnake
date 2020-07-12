@@ -1,0 +1,7 @@
+#test of variables referencing themselves
+#this should return 0
+var chungus = 9
+var chungus = add(chungus, 1)
+
+var good = eq(chungus, 10)
+assert good
