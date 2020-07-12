@@ -58,11 +58,11 @@ def resolvecall(line, f):
     f.write(line[0] + ", " + fname + "\n")
 
 def resolvevar(variable, f):
-    if variable[0] == "ldvar":
+    if variable[0] == "var" or variable[0] == "ldvar":
         f.write("ldvar, " + variable[1] + "\n")
     else:
         staticinfo = staticvars[variable[1]]
         f.write("ld" + staticinfo[0] + ", " + str(staticinfo[1]) + "\n")
 
 if __name__ == "__main__":
-    psncompile("tests/printstr.psn")
+    psncompile("tests/operations.psn")
