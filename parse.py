@@ -17,7 +17,7 @@ def parseline(line):
     if type(line) in rawtypes:
         return line
     if line[0] == "args":
-        if len(line[1]) > 1:
+        if len(line[1]) >= 1:
             buffer = []
             altbuffer = []
             line[1].append(["argseperate"])
@@ -30,7 +30,6 @@ def parseline(line):
                     altbuffer = []
                 else:
                     altbuffer.append(arg)
-            altbuffer = []
             for arg in buffer:
                 if arg[0] in validargs:
                     altbuffer.append(arg)
