@@ -154,7 +154,6 @@ namespace makebin
                     local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
                 }
                 if (splitline[2] == "str") {
-                    ldstr(epBody, splitline[3]);
                     local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
                 }
                 if (splitline[2] == "bool")
