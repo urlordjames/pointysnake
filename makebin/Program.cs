@@ -88,6 +88,11 @@ namespace makebin
                 ldint(epBody, int.Parse(splitline[1]));
                 return;
             }
+            if (splitline[0] == "ldbool")
+            {
+                ldbool(epBody, splitline[1]);
+                return;
+            }
             if (splitline[0] == "call")
             {
                 if (splitline[1] == "print")
