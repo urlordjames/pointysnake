@@ -1,7 +1,8 @@
 from lex import lex
 
-validargs = ["str", "int", "var", "staticvar"]
-rawtypes = [str, int]
+constants = ["str", "int", "bool"]
+validargs = ["str", "int", "bool", "var", "staticvar"]
+rawtypes = [str, int, bool]
 
 def parse(filename):
     lexed = lex(filename)
@@ -15,6 +16,8 @@ def parse(filename):
 
 def parseline(line):
     if type(line) in rawtypes:
+        return line
+    if line[0] in constants:
         return line
     if line[0] == "args":
         if len(line[1]) >= 1:
@@ -44,7 +47,7 @@ def parseline(line):
     if line[0][0] == "setvar":
         if line[1][0] == "function":
             return [line[0][0], "int", line[0][1], parseline(line[1:])]
-        return [line[0][0], line[1][0], line[0][1], parseline("args")]
+        return [line[0][0], line[1][0], line[0][1], parseline(line[1])]
     if line[0][0] == "setstaticvar":
         if line[1][0] == "function":
             print("error: staticvar cannot be set as returned value from function")
