@@ -43,7 +43,7 @@ def parseline(line):
         return ["endfunc"]
     if line[0][0] == "setvar":
         if line[1][0] == "function":
-            return [line[0][0], "int", line[0][1], parseline(["args", line[2:-1]])]
+            return [line[0][0], "int", line[0][1], parseline(line[1:])]
         return [line[0][0], line[1][0], line[0][1], parseline(["args", line[1][1]])]
     if line[0][0] == "setstaticvar":
         if line[1][0] == "function":
