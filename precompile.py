@@ -9,28 +9,32 @@ def psncompile(filename):
     print(parsed)
     f = open("precomp.psnbin", "w")
     for line in parsed:
-        if line[0] == "call":
-            resolvecall(line, f)
-        elif line[0] == "setvar":
-            vartypes[line[2]] = line[1]
-            if type(line[3]) == list:
-                resolvecall(line[3], f)
-                f.write("setvar, " + line[2] + ", " + line[1] + ", pop\n")
-            else:
-                f.write("setvar, " + line[2] + ", " + line[1] + ", " + str(line[3]) + "\n")
-        elif line[0] == "setstaticvar":
-            staticvars[line[2]] = [line[1], line[3]]
-        elif line[0] == "newfunc":
-            f.write("newfunc, " + line[1] + "\n")
-        elif line[0] == "endfunc":
-            f.write("endfunc\n")
-        elif line[0] == "cond":
-            resolvevar(line[1], f)
-            f.write(line[0] + ", " + line[2][1] + "\n")
-        elif line[0] == "assert":
-            resolvevar(line[1], f)
-            f.write(line[0] + "\n")
+        compileline(line, f)
     f.close()
+
+def compileline(line, f):
+    if line[0] == "call":
+        resolvecall(line, f)
+    elif line[0] == "setvar":
+        vartypes[line[2]] = line[1]
+        if type(line[3]) == list:
+            for argument in line[3]:
+                compileline(argument, f)
+            f.write("setvar, " + line[2] + ", " + line[1] + ", pop\n")
+        else:
+            f.write("setvar, " + line[2] + ", " + line[1] + ", " + str(line[3]) + "\n")
+    elif line[0] == "setstaticvar":
+        staticvars[line[2]] = [line[1], line[3]]
+    elif line[0] == "newfunc":
+        f.write("newfunc, " + line[1] + "\n")
+    elif line[0] == "endfunc":
+        f.write("endfunc\n")
+    elif line[0] == "cond":
+        resolvevar(line[1], f)
+        f.write(line[0] + ", " + line[2][1] + "\n")
+    elif line[0] == "assert":
+        resolvevar(line[1], f)
+        f.write(line[0] + "\n")
 
 def resolvecall(line, f):
     fname = line[1]
