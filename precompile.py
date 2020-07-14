@@ -1,5 +1,7 @@
 from parse import parse
 
+validtypes = ["str", "int", "bool"]
+
 vartypes = {}
 
 staticvars = {}
@@ -13,16 +15,14 @@ def psncompile(filename):
     f.close()
 
 def compileline(line, f):
-    if line[0] == "call":
+    if line[0] in validtypes:
+        f.write("ld" + line[0] + ", " + str(line[1]) + "\n")
+    elif line[0] == "call":
         resolvecall(line, f)
     elif line[0] == "setvar":
         vartypes[line[2]] = line[1]
-        if type(line[3]) == list:
-            for argument in line[3]:
-                compileline(argument, f)
-            f.write("setvar, " + line[2] + ", " + line[1] + ", pop\n")
-        else:
-            f.write("setvar, " + line[2] + ", " + line[1] + ", " + str(line[3]) + "\n")
+        compileline(line[3], f)
+        f.write("setvar, " + line[2] + ", " + line[1] + ", pop\n")
     elif line[0] == "setstaticvar":
         staticvars[line[2]] = [line[1], line[3]]
     elif line[0] == "newfunc":
@@ -49,7 +49,7 @@ def resolvecall(line, f):
                     if value[0] == "var" or value[0] == "staticvar":
                         resolvevar(value, f)
                     else:
-                        f.write("ld" + value[0] + ", " + str(value[1]) + "\n")
+                        compileline(value, f)
         if type(arg) == str:
             f.write("ldstr, " + arg + "\n")
         if type(arg) == int:
