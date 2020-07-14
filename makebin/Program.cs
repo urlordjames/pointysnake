@@ -162,7 +162,9 @@ namespace makebin
                 }
                 if (splitline[2] == "bool")
                 {
-                    ldbool(epBody, splitline[3]);
+                    if (splitline[3] != "pop") {
+                        ldbool(epBody, splitline[3]);
+                    }
                     local = getvar(mod.CorLibTypes.Boolean, splitline[1], epBody.Variables);
                 }
                 if (splitline[2] == "var")
