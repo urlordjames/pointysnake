@@ -151,9 +151,6 @@ namespace makebin
                 Local local = null;
                 if (splitline[2] == "int")
                 {
-                    if (splitline[3] != "pop") {
-                        ldint(epBody, int.Parse(splitline[3]));
-                    }
                     local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
                 }
                 if (splitline[2] == "str") {
@@ -162,9 +159,6 @@ namespace makebin
                 }
                 if (splitline[2] == "bool")
                 {
-                    if (splitline[3] != "pop") {
-                        ldbool(epBody, splitline[3]);
-                    }
                     local = getvar(mod.CorLibTypes.Boolean, splitline[1], epBody.Variables);
                 }
                 if (splitline[2] == "var")

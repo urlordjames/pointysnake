@@ -22,7 +22,7 @@ def compileline(line, f):
     elif line[0] == "setvar":
         vartypes[line[2]] = line[1]
         compileline(line[3], f)
-        f.write("setvar, " + line[2] + ", " + line[1] + ", pop\n")
+        f.write("setvar, " + line[2] + ", " + line[1] + "\n")
     elif line[0] == "setstaticvar":
         staticvars[line[2]] = [line[1], line[3]]
     elif line[0] == "newfunc":
