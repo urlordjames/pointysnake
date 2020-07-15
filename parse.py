@@ -24,8 +24,15 @@ def parseline(line):
             buffer = []
             altbuffer = []
             line[1].append(["argseperate"])
+            funcscope = 0
             for arg in line[1]:
-                if arg[0] == "argseperate":
+                if arg[0] == "function":
+                    altbuffer.append(arg)
+                    funcscope += 1
+                elif arg[0] == "functionend":
+                    altbuffer.append(arg)
+                    funcscope -= 1
+                elif funcscope == 0 and arg[0] == "argseperate":
                     if len(altbuffer) > 1:
                         buffer.append(altbuffer)
                     else:
