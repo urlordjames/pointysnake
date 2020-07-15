@@ -1,5 +1,9 @@
 #test of operations
-#should print 7
+#should return 0
 var addition = add(3, 4)
 var good = eq(addition, 7)
+assert good
+
+var subtraction = sub(10, 4)
+var good = eq(subtraction, 6)
 assert good
