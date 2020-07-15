@@ -133,6 +133,16 @@ namespace makebin
                     epBody.Instructions.Add(OpCodes.Sub.ToInstruction());
                     return;
                 }
+                if (splitline[1] == "mult")
+                {
+                    epBody.Instructions.Add(OpCodes.Mul.ToInstruction());
+                    return;
+                }
+                if (splitline[1] == "div")
+                {
+                    epBody.Instructions.Add(OpCodes.Div_Un.ToInstruction());
+                    return;
+                }
                 if (splitline[1] == "eq")
                 {
                     epBody.Instructions.Add(OpCodes.Ceq.ToInstruction());
