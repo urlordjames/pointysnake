@@ -39,21 +39,16 @@ def compileline(line, f):
 def resolvecall(line, f):
     fname = line[1]
     for arg in line[2]:
-        if type(arg) == list:
-            if arg[0] == "var" or arg[0] == "staticvar":
-                resolvevar(arg, f)
-            if arg[0] == "call":
-                resolvecall(line[2][0], f)
-            if type(arg[0]) == list:
-                for value in arg:
-                    if value[0] == "var" or value[0] == "staticvar":
-                        resolvevar(value, f)
-                    else:
-                        compileline(value, f)
-        if type(arg) == str:
-            f.write("ldstr, " + arg + "\n")
-        if type(arg) == int:
-            f.write("ldint, " + str(arg) + "\n")
+        if arg[0] == "var" or arg[0] == "staticvar":
+            resolvevar(arg, f)
+        if arg[0] == "call":
+            resolvecall(line[2][0], f)
+        if type(arg[0]) == list:
+            for value in arg:
+                if value[0] == "var" or value[0] == "staticvar":
+                    resolvevar(value, f)
+                else:
+                    compileline(value, f)
     if fname == "return":
         if line[2] == []:
             f.write("ldint, 0\n")
@@ -69,4 +64,4 @@ def resolvevar(variable, f):
         f.write("ld" + staticinfo[0] + ", " + str(staticinfo[1]) + "\n")
 
 if __name__ == "__main__":
-    psncompile("tests/printstr.psn")
+    psncompile("tests/functionparsing.psn")
