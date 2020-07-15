@@ -1,0 +1,14 @@
+#test of argument parsing with nested functions
+#should return 0
+
+function two() {
+    return(2)
+}
+
+function three() {
+    return(3)
+}
+
+var good = eq(add(two(), 1), three())
+
+assert good
