@@ -18,6 +18,6 @@ That's it, one line, no defining entrypoints, classes, or namespaces.
 - create a file (although it's not enforced, a .psn extension is reccomended) and write your code
 - precompile your code by running `python build.py (filename)`.
 - build the compiler from source, or go to the Github actions page and download the artifact called `compiler`
-- place the generated file called `precmop.psnbin` from the python script in the same folder as `makebin.exe` and run it
+- place the generated file called `precomp.psnbin` from the python script in the same folder as `makebin.exe` and run it
 - executable called `executable.exe` will be created
 - congratulations, you've compiled pointysnake!
