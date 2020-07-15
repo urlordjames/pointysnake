@@ -53,33 +53,31 @@ def tokenizeln(line):
     for match in matches:
         if match[1][0] == "ignore":
             continue
-        if match[1][0] == "function":
+        elif match[1][0] == "function":
             tokenized.append([match[1][0], match[0].group()[:-1]])
             continue
-        if match[1][0] == "str":
+        elif match[1][0] == "str":
             tokenized.append([match[1][0], match[0].group()[1:-1]])
             continue
-        if match[1][0] == "int":
-            #this is ugly and disgusting and needs to be fixed later maybe
-            #TODO: fix this mess
+        elif match[1][0] == "int":
             previoustoken = tokenized[len(tokenized) - 1]
             if previoustoken[0] == "int":
                 previoustoken[1] = int(str(previoustoken[1]) + str(match[0].group()))
             else:
                 tokenized.append([match[1][0], int(match[0].group())])
             continue
-        if match[1][0] == "bool":
+        elif match[1][0] == "bool":
             tokenized.append([match[1][0], match[0].group()])
             continue
-        if match[1][0] == "var":
+        elif match[1][0] == "var":
             tokenized.append([match[1][0], match[1][1]])
             continue
-        if match[1][0] == "setvar":
+        elif match[1][0] == "setvar":
             varname = match[0].group()[4:-3]
             tokenized.append([match[1][0], varname])
             tokens.update({f"^{varname}$": ["var", varname]})
             continue
-        if match[1][0] == "setstaticvar":
+        elif match[1][0] == "setstaticvar":
             varname = match[0].group()[10:-3]
             tokenized.append([match[1][0], varname])
             tokens.update({f"^{varname}$": ["staticvar", varname]})

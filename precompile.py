@@ -41,9 +41,9 @@ def resolvecall(line, f):
     for arg in line[2]:
         if arg[0] == "var" or arg[0] == "staticvar":
             resolvevar(arg, f)
-        if arg[0] == "call":
+        elif arg[0] == "call":
             resolvecall(line[2][0], f)
-        if type(arg[0]) == list:
+        elif type(arg[0]) == list:
             for value in arg:
                 if value[0] == "var" or value[0] == "staticvar":
                     resolvevar(value, f)

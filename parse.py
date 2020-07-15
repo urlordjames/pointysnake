@@ -17,9 +17,9 @@ def parse(filename):
 def parseline(line):
     if type(line) in rawtypes:
         return line
-    if line[0] in constants:
+    elif line[0] in constants:
         return line
-    if line[0] == "args":
+    elif line[0] == "args":
         if len(line[1]) >= 1:
             buffer = []
             altbuffer = []
@@ -40,27 +40,27 @@ def parseline(line):
                     altbuffer.append(parseline(arg))
             return altbuffer
         return []
-    if line[0][0] == "functiondefine":
+    elif line[0][0] == "functiondefine":
         return ["newfunc", line[1][1]]
-    if line[0][0] == "functionterminate":
+    elif line[0][0] == "functionterminate":
         return ["endfunc"]
-    if line[0][0] == "setvar":
+    elif line[0][0] == "setvar":
         if line[1][0] == "function":
             return [line[0][0], "int", line[0][1], parseline(line[1:])]
         return [line[0][0], line[1][0], line[0][1], parseline(line[1])]
-    if line[0][0] == "setstaticvar":
+    elif line[0][0] == "setstaticvar":
         if line[1][0] == "function":
             print("error: staticvar cannot be set as returned value from function")
             return -1
         return [line[0][0], line[1][0], line[0][1], parseline(line[1][1])]
-    if line[0][0] == "function":
+    elif line[0][0] == "function":
         if line[1][0] == "functionend":
             return ["call", line[0][1], []]
         else:
             return ["call", line[0][1], [parseline(["args", line[1:-1]])]]
-    if line[0][0] == "conddefine":
+    elif line[0][0] == "conddefine":
         return ["cond", line[1], line[3]]
-    if line[0][0] == "assert":
+    elif line[0][0] == "assert":
         return [line[0][0], line[1]]
     return -1
 
