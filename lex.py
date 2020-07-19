@@ -86,4 +86,4 @@ def tokenizeln(line):
     return tokenized
 
 if __name__ == "__main__":
-    print(lex("tests/printint.psn"))
+    print(lex("tests/printstr.psn"))
