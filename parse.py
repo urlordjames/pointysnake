@@ -57,8 +57,7 @@ def parseline(line):
         return [line[0][0], line[1][0], line[0][1], parseline(line[1])]
     elif line[0][0] == "setstaticvar":
         if line[1][0] == "function":
-            print("error: staticvar cannot be set as returned value from function")
-            return -1
+            raise Exception("error: staticvar cannot be set as returned value from function")
         return [line[0][0], line[1][0], line[0][1], parseline(line[1][1])]
     elif line[0][0] == "function":
         if line[1][0] == "functionend":
@@ -69,7 +68,7 @@ def parseline(line):
         return ["cond", line[1], line[3]]
     elif line[0][0] == "assert":
         return [line[0][0], line[1]]
-    return -1
+    raise Exception("token unknown")
 
 if __name__ == "__main__":
     print(parse("tests/printstr.psn"))
