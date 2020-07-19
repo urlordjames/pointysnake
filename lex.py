@@ -62,7 +62,7 @@ def tokenizeln(line):
         elif match[1][0] == "int":
             previoustoken = tokenized[len(tokenized) - 1]
             if previoustoken[0] == "int":
-                previoustoken[1] = int(str(previoustoken[1]) + str(match[0].group()))
+                previoustoken[1] = int(str(previoustoken[1]) + match[0].group())
             else:
                 tokenized.append([match[1][0], int(match[0].group())])
             continue
@@ -86,4 +86,4 @@ def tokenizeln(line):
     return tokenized
 
 if __name__ == "__main__":
-    print(lex("tests/printstr.psn"))
+    print(lex("tests/printint.psn"))
