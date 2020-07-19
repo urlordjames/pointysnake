@@ -98,7 +98,7 @@ namespace makebin
                             {
                                 type = mod.CorLibTypes.String;
                             }
-                            if (previous.OpCode == OpCodes.Call)
+                            else if (previous.OpCode == OpCodes.Call)
                             {
                                 object operand = previous.GetOperand();
                                 if (operand != null && operand is MethodDefUser)
@@ -107,7 +107,7 @@ namespace makebin
                                     type = method.ReturnType;
                                 }
                             }
-                            if (previous.IsLdloc())
+                            else if (previous.IsLdloc())
                             {
                                 type = previous.GetLocal(epBody.Variables).Type;
                             }
