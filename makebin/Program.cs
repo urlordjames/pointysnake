@@ -78,139 +78,111 @@ namespace makebin
         public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody)
         {
             String[] splitline = line.Split(new String[] { ", " }, StringSplitOptions.None);
-            if (splitline[0] == "ldstr")
-            {
-                ldstr(epBody, splitline[1]);
-                return;
-            }
-            if (splitline[0] == "ldint")
-            {
-                ldint(epBody, int.Parse(splitline[1]));
-                return;
-            }
-            if (splitline[0] == "ldbool")
-            {
-                ldbool(epBody, splitline[1]);
-                return;
-            }
-            if (splitline[0] == "call")
-            {
-                if (splitline[1] == "print")
-                {
-                    var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
-                    Instruction previous = epBody.Instructions[epBody.Instructions.Count - 1];
-                    TypeSig type = mod.CorLibTypes.Int32;
-                    if (previous.OpCode == OpCodes.Ldstr) {
-                        type = mod.CorLibTypes.String;
-                    }
-                    if (previous.OpCode == OpCodes.Call) {
-                        object operand = previous.GetOperand();
-                        if (operand != null && operand is MethodDefUser) {
-                            MethodDefUser method = (MethodDefUser) operand;
-                            type = method.ReturnType;
-                        }
-                    }
-                    if (previous.IsLdloc())
-                    {
-                        type = previous.GetLocal(epBody.Variables).Type;
-                    }
-                    var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, type), consoleRef);
-                    epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
+            switch (splitline[0]) {
+                case "ldstr":
+                    ldstr(epBody, splitline[1]);
                     return;
-                }
-                if (splitline[1] == "return")
-                {
+                case "ldint":
+                    ldint(epBody, int.Parse(splitline[1]));
+                    return;
+                case "ldbool":
+                    ldbool(epBody, splitline[1]);
+                    return;
+                case "call":
+                    switch (splitline[1]) {
+                        case "print":
+                            var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
+                            Instruction previous = epBody.Instructions[epBody.Instructions.Count - 1];
+                            TypeSig type = mod.CorLibTypes.Int32;
+                            if (previous.OpCode == OpCodes.Ldstr)
+                            {
+                                type = mod.CorLibTypes.String;
+                            }
+                            if (previous.OpCode == OpCodes.Call)
+                            {
+                                object operand = previous.GetOperand();
+                                if (operand != null && operand is MethodDefUser)
+                                {
+                                    MethodDefUser method = (MethodDefUser)operand;
+                                    type = method.ReturnType;
+                                }
+                            }
+                            if (previous.IsLdloc())
+                            {
+                                type = previous.GetLocal(epBody.Variables).Type;
+                            }
+                            var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, type), consoleRef);
+                            epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
+                            return;
+                        case "return":
+                            epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
+                            return;
+                        case "add":
+                            epBody.Instructions.Add(OpCodes.Add.ToInstruction());
+                            return;
+                        case "sub":
+                            epBody.Instructions.Add(OpCodes.Sub.ToInstruction());
+                            return;
+                        case "mult":
+                            epBody.Instructions.Add(OpCodes.Mul.ToInstruction());
+                            return;
+                        case "div":
+                            epBody.Instructions.Add(OpCodes.Div_Un.ToInstruction());
+                            return;
+                        case "eq":
+                            epBody.Instructions.Add(OpCodes.Ceq.ToInstruction());
+                            return;
+                    }
+                    epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
+                    return;
+                case "ldvar":
+                    ldvar(epBody, splitline[1]);
+                    return;
+                case "setvar":
+                    Local local = null;
+                    switch (splitline[2]) {
+                        case "int":
+                            local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
+                            break;
+                        case "str":
+                            local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
+                            break;
+                        case "bool":
+                            local = getvar(mod.CorLibTypes.Boolean, splitline[1], epBody.Variables);
+                            break;
+                        case "var":
+                            ldvar(epBody, splitline[3]);
+                            local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
+                            break;
+                    }
+                    epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
+                    return;
+                case "newfunc":
+                    currentfunc = newfunc(mod, splitline[1]);
+                    return;
+                case "endfunc":
+                    currentfunc = mod.EntryPoint;
+                    return;
+                case "cond":
+                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                    int placeholder = epBody.Instructions.Count - 1;
+                    epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
+                    epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
+                    //wasted instruction, fix potentially
+                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                    int blockend = epBody.Instructions.Count - 1;
+                    epBody.Instructions[placeholder] = (OpCodes.Brfalse.ToInstruction(epBody.Instructions[blockend]));
+                    return;
+                case "assert":
+                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                    placeholder = epBody.Instructions.Count - 1;
+                    epBody.Instructions.Add(OpCodes.Ldc_I4_1.ToInstruction());
                     epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
+                    //wasted instruction (again)
+                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                    blockend = epBody.Instructions.Count - 1;
+                    epBody.Instructions[placeholder] = (OpCodes.Brtrue.ToInstruction(epBody.Instructions[blockend]));
                     return;
-                }
-                if (splitline[1] == "add")
-                {
-                    epBody.Instructions.Add(OpCodes.Add.ToInstruction());
-                    return;
-                }
-                if (splitline[1] == "sub")
-                {
-                    epBody.Instructions.Add(OpCodes.Sub.ToInstruction());
-                    return;
-                }
-                if (splitline[1] == "mult")
-                {
-                    epBody.Instructions.Add(OpCodes.Mul.ToInstruction());
-                    return;
-                }
-                if (splitline[1] == "div")
-                {
-                    epBody.Instructions.Add(OpCodes.Div_Un.ToInstruction());
-                    return;
-                }
-                if (splitline[1] == "eq")
-                {
-                    epBody.Instructions.Add(OpCodes.Ceq.ToInstruction());
-                    return;
-                }
-                epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
-                return;
-            }
-            if (splitline[0] == "ldvar")
-            {
-                ldvar(epBody, splitline[1]);
-                return;
-            }
-            if (splitline[0] == "setvar")
-            {
-                Local local = null;
-                if (splitline[2] == "int")
-                {
-                    local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
-                }
-                if (splitline[2] == "str") {
-                    local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
-                }
-                if (splitline[2] == "bool")
-                {
-                    local = getvar(mod.CorLibTypes.Boolean, splitline[1], epBody.Variables);
-                }
-                if (splitline[2] == "var")
-                {
-                    ldvar(epBody, splitline[3]);
-                    local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
-                }
-                epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
-                return;
-            }
-            if (splitline[0] == "newfunc")
-            {
-                currentfunc = newfunc(mod, splitline[1]);
-                return;
-            }
-            if (splitline[0] == "endfunc")
-            {
-                currentfunc = mod.EntryPoint;
-                return;
-            }
-            if (splitline[0] == "cond")
-            {
-                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                int placeholder = epBody.Instructions.Count - 1;
-                epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
-                epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
-                //wasted instruction, fix potentially
-                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                int blockend = epBody.Instructions.Count - 1;
-                epBody.Instructions[placeholder] = (OpCodes.Brfalse.ToInstruction(epBody.Instructions[blockend]));
-                return;
-            }
-            if (splitline[0] == "assert")
-            {
-                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                int placeholder = epBody.Instructions.Count - 1;
-                epBody.Instructions.Add(OpCodes.Ldc_I4_1.ToInstruction());
-                epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
-                //wasted instruction (again)
-                epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                int blockend = epBody.Instructions.Count - 1;
-                epBody.Instructions[placeholder] = (OpCodes.Brtrue.ToInstruction(epBody.Instructions[blockend]));
-                return;
             }
             Console.WriteLine("error: unknown intermediate instruction");
             Console.WriteLine(line);
