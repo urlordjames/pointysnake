@@ -1,0 +1,17 @@
+#test of if parsing
+#should give no compilation or runtime errors and return 0
+function test() {
+    if (true) {
+        if (false) {
+            return(1)
+        }
+        return(0)
+    }
+    return(1)
+}
+
+if (true) {
+    return(test())
+}
+
+return(1)
