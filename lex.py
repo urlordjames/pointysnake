@@ -26,7 +26,7 @@ tokens = {
     "^{$": ["functionstart"],
     "^}$": ["functionterminate"],
     "^,$": ["argseperate"],
-    "^if ($": ["ifdefine"],
+    "^if \\($": ["ifdefine"],
     "^[a-z]+\\($": ["function"],
     "^\\d+$": ["int"],
     "^\".*\"$": ["str"],

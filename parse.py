@@ -47,6 +47,8 @@ def parseline(line):
                     altbuffer.append(parseline(arg))
             return altbuffer
         return []
+    elif line[0][0] in constants:
+        return parseline(line[0])
     elif line[0][0] == "functiondefine":
         return ["newfunc", line[1][1]]
     elif line[0][0] == "functionterminate":
@@ -66,6 +68,8 @@ def parseline(line):
             return ["call", line[0][1], [parseline(["args", line[1:-1]])]]
     elif line[0][0] == "assert":
         return [line[0][0], line[1]]
+    elif line[0][0] == "ifdefine":
+        return [line[0][0], [parseline(line[1:-2])]]
     raise Exception("token unknown")
 
 if __name__ == "__main__":

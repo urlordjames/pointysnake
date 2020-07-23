@@ -166,15 +166,26 @@ namespace makebin
                     currentfunc = mod.EntryPoint;
                     return;
                 case "brtrue":
-                    //might want to attach branch type to branch end since this code just adds a placeholder NOP
                     epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                    manager.pushbranch(int.Parse(splitline[1]), epBody.Instructions.Count - 1);
+                    manager.pushbranch(int.Parse(splitline[1]), epBody.Instructions.Count - 1, "brtrue");
+                    return;
+                case "brfalse":
+                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                    manager.pushbranch(int.Parse(splitline[1]), epBody.Instructions.Count - 1, "brfalse");
                     return;
                 case "brend":
                     //wasted instruction, fix potentially
                     epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                     placeholder = epBody.Instructions.Count - 1;
-                    epBody.Instructions[manager.getbranch(int.Parse(splitline[1]))] = OpCodes.Brtrue.ToInstruction(epBody.Instructions[placeholder]);
+                    int branch = int.Parse(splitline[1]);
+                    switch (manager.getbranchtype(branch)) {
+                        case "brtrue":
+                            epBody.Instructions[manager.getbranch(branch)] = OpCodes.Brtrue.ToInstruction(epBody.Instructions[placeholder]);
+                            break;
+                        case "brfalse":
+                            epBody.Instructions[manager.getbranch(branch)] = OpCodes.Brfalse.ToInstruction(epBody.Instructions[placeholder]);
+                            break;
+                    }
                     return;
             }
             Console.WriteLine("error: unknown intermediate instruction");
