@@ -90,6 +90,7 @@ namespace makebin
                     ldbool(epBody, splitline[1]);
                     return;
                 case "call":
+                    int placeholder;
                     switch (splitline[1]) {
                         case "print":
                             var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
@@ -164,16 +165,6 @@ namespace makebin
                 case "endfunc":
                     currentfunc = mod.EntryPoint;
                     return;
-                case "cond":
-                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                    int placeholder = epBody.Instructions.Count - 1;
-                    epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
-                    epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
-                    //wasted instruction, fix potentially
-                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                    int blockend = epBody.Instructions.Count - 1;
-                    epBody.Instructions[placeholder] = OpCodes.Brfalse.ToInstruction(epBody.Instructions[blockend]);
-                    return;
                 case "brtrue":
                     //might want to attach branch type to branch end since this code just adds a placeholder NOP
                     epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
@@ -184,6 +175,9 @@ namespace makebin
                     epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                     placeholder = epBody.Instructions.Count - 1;
                     epBody.Instructions[manager.getbranch(int.Parse(splitline[1]))] = OpCodes.Brtrue.ToInstruction(epBody.Instructions[placeholder]);
+                    return;
+                case "pop":
+                    epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
                     return;
             }
             Console.WriteLine("error: unknown intermediate instruction");

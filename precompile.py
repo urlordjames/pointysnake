@@ -17,6 +17,7 @@ def psncompile(filename):
     f.close()
 
 def compileline(line, f):
+    global branchid
     if line[0] in validtypes:
         f.write(f"ld{line[0]}, {str(line[1])}\n")
     elif line[0] == "call":
@@ -31,8 +32,15 @@ def compileline(line, f):
         f.write(f"newfunc, {line[1]}\n")
     elif line[0] == "endfunc":
         f.write("endfunc\n")
+    elif line[0] == "cond":
+        resolvevar(line[1], f)
+        f.write(f"brtrue, {str(branchid)}\n")
+        resolvecall(line[2], f)
+        #this pop is a hack, I need to fix ignoring return of functions I think
+        f.write("pop\n")
+        f.write(f"brend, {str(branchid)}\n")
+        branchid += 1
     elif line[0] == "assert":
-        global branchid
         resolvevar(line[1], f)
         f.write(f"brtrue, {str(branchid)}\n")
         f.write("ldint, 1\n")
