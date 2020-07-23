@@ -176,9 +176,6 @@ namespace makebin
                     placeholder = epBody.Instructions.Count - 1;
                     epBody.Instructions[manager.getbranch(int.Parse(splitline[1]))] = OpCodes.Brtrue.ToInstruction(epBody.Instructions[placeholder]);
                     return;
-                case "pop":
-                    epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
-                    return;
             }
             Console.WriteLine("error: unknown intermediate instruction");
             Console.WriteLine(line);

@@ -64,8 +64,6 @@ def parseline(line):
             return ["call", line[0][1], []]
         else:
             return ["call", line[0][1], [parseline(["args", line[1:-1]])]]
-    elif line[0][0] == "conddefine":
-        return ["cond", line[1], parseline(line[3:])]
     elif line[0][0] == "assert":
         return [line[0][0], line[1]]
     raise Exception("token unknown")
