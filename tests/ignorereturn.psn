@@ -1,0 +1,7 @@
+#test of ignoring returned value
+#should give no compilation error
+function test() {
+    return(0)
+}
+
+test()

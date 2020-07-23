@@ -7,3 +7,4 @@ function exec() {
 
 var execute = eq(1, 1)
 cond execute|exec()
+cond execute|print("I'm a void function!")
