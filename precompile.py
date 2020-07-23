@@ -6,6 +6,8 @@ vartypes = {}
 
 staticvars = {}
 
+branchid = 0
+
 def psncompile(filename):
     parsed = parse(filename)
     print(parsed)
@@ -29,12 +31,14 @@ def compileline(line, f):
         f.write(f"newfunc, {line[1]}\n")
     elif line[0] == "endfunc":
         f.write("endfunc\n")
-    elif line[0] == "cond":
-        resolvevar(line[1], f)
-        f.write(f"{line[0]}, {line[2][1]}\n")
     elif line[0] == "assert":
+        global branchid
         resolvevar(line[1], f)
-        f.write(f"{line[0]}\n")
+        f.write(f"brtrue, {str(branchid)}\n")
+        f.write("ldint, 1\n")
+        f.write("call, return\n")
+        f.write(f"brend, {str(branchid)}\n")
+        branchid += 1
 
 def resolvecall(line, f):
     fname = line[1]
@@ -64,4 +68,4 @@ def resolvevar(variable, f):
         f.write(f"ld{staticinfo[0]}, {str(staticinfo[1])}\n")
 
 if __name__ == "__main__":
-    psncompile("tests/printstr.psn")
+    psncompile("tests/assert.psn")

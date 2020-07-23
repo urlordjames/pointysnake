@@ -10,6 +10,7 @@ namespace makebin
     {
         public static MethodDef currentfunc = null;
         public static TypeDefUser startUpType = null;
+        public static BranchManager manager = new BranchManager();
 
         static void Main(string[] args)
         {
@@ -171,17 +172,18 @@ namespace makebin
                     //wasted instruction, fix potentially
                     epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                     int blockend = epBody.Instructions.Count - 1;
-                    epBody.Instructions[placeholder] = (OpCodes.Brfalse.ToInstruction(epBody.Instructions[blockend]));
+                    epBody.Instructions[placeholder] = OpCodes.Brfalse.ToInstruction(epBody.Instructions[blockend]);
                     return;
-                case "assert":
+                case "brtrue":
+                    //might want to attach branch type to branch end since this code just adds a placeholder NOP
+                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+                    manager.pushbranch(int.Parse(splitline[1]), epBody.Instructions.Count - 1);
+                    return;
+                case "brend":
+                    //wasted instruction, fix potentially
                     epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                     placeholder = epBody.Instructions.Count - 1;
-                    epBody.Instructions.Add(OpCodes.Ldc_I4_1.ToInstruction());
-                    epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
-                    //wasted instruction (again)
-                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                    blockend = epBody.Instructions.Count - 1;
-                    epBody.Instructions[placeholder] = (OpCodes.Brtrue.ToInstruction(epBody.Instructions[blockend]));
+                    epBody.Instructions[manager.getbranch(int.Parse(splitline[1]))] = OpCodes.Brtrue.ToInstruction(epBody.Instructions[placeholder]);
                     return;
             }
             Console.WriteLine("error: unknown intermediate instruction");
