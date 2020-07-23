@@ -4,4 +4,5 @@ function test() {
     return(0)
 }
 
-test()
+#temporarily disabled to focus on if statements
+#test()
