@@ -39,6 +39,8 @@ def compileline(line, f):
         f.write("call, return\n")
         f.write(f"brend, {str(branchid)}\n")
         branchid += 1
+    else:
+        raise Exception("unknown grammar")
 
 def resolvecall(line, f):
     fname = line[1]
@@ -68,4 +70,4 @@ def resolvevar(variable, f):
         f.write(f"ld{staticinfo[0]}, {str(staticinfo[1])}\n")
 
 if __name__ == "__main__":
-    psncompile("tests/assert.psn")
+    psncompile("tests/printstr.psn")
