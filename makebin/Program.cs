@@ -31,7 +31,7 @@ namespace makebin
             foreach (String line in file) {
                 WriteInstruction(line, mod, currentfunc.Body);
             }
-            if (epBody.Instructions[epBody.Instructions.Count - 1].OpCode != OpCodes.Ret)
+            if (epBody.Instructions.Count == 0 || epBody.Instructions[epBody.Instructions.Count - 1].OpCode != OpCodes.Ret)
             {
                 entryPoint.Body.Instructions.Add(OpCodes.Ldc_I4_0.ToInstruction());
                 entryPoint.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
