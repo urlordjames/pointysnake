@@ -50,9 +50,16 @@ def tokenizeln(line):
         for token in tokens.keys():
             match = re.search(token, buffer)
             if not match == None:
-                matches.append([match, tokens[token]])
-                buffer = ""
-                continue
+                if len(tokens[token]) > 1 and (tokens[token][1] == "setvar" or tokens[token][1] == "setstaticvar"):
+                    matches.append([match, tokens[token]])
+                    buffer = ""
+                    continue
+                else:
+                    if tokens[token][0] == "assignvar":
+                        continue
+                    matches.append([match, tokens[token]])
+                    buffer = ""
+                    continue
     tokenized = []
     for match in matches:
         if match[1][0] == "ignore":
@@ -74,6 +81,12 @@ def tokenizeln(line):
             tokenized.append([match[1][0], match[0].group()])
             continue
         elif match[1][0] == "assignvar":
+            try:
+                oldthing = tokenized[len(tokenized) - 2][0]
+            except:
+                continue
+            if not (oldthing == "setvar" or "setstaticvar"):
+                continue
             varname = match[0].group()[:-1]
             tokenized.append([match[1][0], varname])
             tokens.update({f"^{varname}$": [tokenized[len(tokenized) - 3][0][3:], varname]})
