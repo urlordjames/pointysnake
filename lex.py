@@ -35,8 +35,9 @@ tokens = {
     "^\".*\"$": ["str"],
     "^\\)$": ["functionend"],
     "^var $": ["setvar"],
-    "^staticvar$": ["setstaticvar"],
-    "^[a-zA-Z]+ = $": ["assignvar"],
+    "^staticvar $": ["setstaticvar"],
+    "^[a-zA-Z]+ $": ["assignvar"],
+    "^= $": ["assignop"],
     "^true|false$": ["bool"],
     "^[ |\t]$": ["ignore"]
 }
@@ -73,7 +74,7 @@ def tokenizeln(line):
             tokenized.append([match[1][0], match[0].group()])
             continue
         elif match[1][0] == "assignvar":
-            varname = match[0].group()[:-3]
+            varname = match[0].group()[:-1]
             tokenized.append([match[1][0], varname])
             tokens.update({f"^{varname}$": [tokenized[len(tokenized) - 3][0][3:], varname]})
             continue
