@@ -4,6 +4,6 @@ function dog() {
     return(8)
 }
 
-var good = eq(dog(), 8)
+var bool good = eq(dog(), 8)
 
 assert good

@@ -9,6 +9,6 @@ function three() {
     return(3)
 }
 
-var good = eq(add(two(), 1), three())
+var bool good = eq(add(two(), 1), three())
 
 assert good

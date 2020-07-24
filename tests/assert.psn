@@ -1,4 +1,4 @@
 #test of assertions
 #should return 0
-var good = true
+var bool good = true
 assert good

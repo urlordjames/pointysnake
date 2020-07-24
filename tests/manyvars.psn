@@ -1,10 +1,10 @@
 #test of setting many variables
 #should print the numbers 1 through 5
-var one = 1
-var two = 2
-var three = 3
-var four = 4
-var five = 5
+var int one = 1
+var int two = 2
+var int three = 3
+var int four = 4
+var int five = 5
 
 print(one)
 print(two)

@@ -1,4 +1,4 @@
 #test of bool values
 #should print true
-var good = true
+var bool good = true
 print(good)

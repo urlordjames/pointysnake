@@ -1,17 +1,17 @@
 #test of operations
 #should return 0
-var addition = add(3, 4)
-var good = eq(addition, 7)
+var int addition = add(3, 4)
+var bool good = eq(addition, 7)
 assert good
 
-var subtraction = sub(10, 4)
-var good = eq(subtraction, 6)
+var int subtraction = sub(10, 4)
+var bool good = eq(subtraction, 6)
 assert good
 
-var multiplication = mult(3, 4)
-var good = eq(multiplication, 12)
+var int multiplication = mult(3, 4)
+var bool good = eq(multiplication, 12)
 assert good
 
-var division = div(9, 3)
-var good = eq(division, 3)
+var int division = div(9, 3)
+var bool good = eq(division, 3)
 assert good

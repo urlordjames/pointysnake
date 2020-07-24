@@ -1,7 +1,7 @@
 #test of static variables
 #should substitute variable at compiletime
-staticvar number = 42
+staticvar int number = 42
 print(number)
 
-var islegit = eq(42, number)
+var int islegit = eq(42, number)
 assert islegit
