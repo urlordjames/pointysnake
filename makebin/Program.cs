@@ -20,7 +20,7 @@ namespace makebin
             startUpType = new TypeDefUser("PointySnake", "Program", mod.CorLibTypes.Object.TypeDefOrRef);
             mod.Types.Add(startUpType);
             entryPoint.Attributes = MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
-            entryPoint.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed;
+            entryPoint.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed | MethodImplAttributes.AggressiveOptimization;
             entryPoint.ParamDefs.Add(new ParamDefUser("args", 1));
             var epBody = new CilBody();
             entryPoint.Body = epBody;
@@ -57,7 +57,7 @@ namespace makebin
         public static MethodDef newfunc(ModuleDefUser mod, string name) {
             var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(mod.CorLibTypes.Int32));
             newfunction.Attributes = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
-            newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed;
+            newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed | MethodImplAttributes.AggressiveOptimization;
             startUpType.Methods.Add(newfunction);
             newfunction.Body = new CilBody();
             return newfunction;
