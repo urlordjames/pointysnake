@@ -23,6 +23,8 @@ def compileline(line, f):
     global branchid
     if line[0] in validtypes:
         f.write(f"ld{line[0]}, {str(line[1])}\n")
+    elif line[0] == "var":
+        resolvevar(line, f)
     elif line[0] == "call":
         resolvecall(line, f)
     elif line[0] == "setvar":
