@@ -49,8 +49,9 @@ def tokenizeln(line):
         buffer += char
         for token in tokens.keys():
             match = re.search(token, buffer)
-            if not match == None:
-                if len(tokens[token]) > 1 and (tokens[token][1] == "setvar" or tokens[token][1] == "setstaticvar"):
+            if not match is None:
+                matchlen = len(matches)
+                if matchlen >= 2 and (matches[matchlen - 2][1][0] == "setvar" or matches[matchlen - 2][1][0] == "setstaticvar"):
                     matches.append([match, tokens[token]])
                     buffer = ""
                     continue
