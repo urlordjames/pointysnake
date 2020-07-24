@@ -55,12 +55,12 @@ def parseline(line):
         return ["endfunc"]
     elif line[0][0] == "setvar":
         if line[1][0] == "function":
-            return [line[0][0], "int", line[0][1], parseline(line[1:])]
-        return [line[0][0], line[1][0], line[0][1], parseline(line[1])]
+            return [line[0][0], "int", line[2][1], parseline(line[3:])]
+        return [line[0][0], line[1][1], line[2][1], parseline(line[3])]
     elif line[0][0] == "setstaticvar":
         if line[1][0] == "function":
             raise Exception("error: staticvar cannot be set as returned value from function")
-        return [line[0][0], line[1][0], line[0][1], parseline(line[1][1])]
+        return [line[0][0], line[1][1], line[2][1], parseline(line[3])]
     elif line[0][0] == "function":
         if line[1][0] == "functionend":
             return ["call", line[0][1], []]

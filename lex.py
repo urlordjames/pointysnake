@@ -26,13 +26,17 @@ tokens = {
     "^{$": ["functionstart"],
     "^}$": ["functionterminate"],
     "^,$": ["argseperate"],
+    "^int $": ["type", "int"],
+    "^string $": ["type", "string"],
+    "^bool $": ["type", "bool"],
     "^if \\($": ["ifdefine"],
     "^[a-z]+\\($": ["function"],
     "^\\d+$": ["int"],
     "^\".*\"$": ["str"],
     "^\\)$": ["functionend"],
-    "^var [a-zA-Z]+ = $": ["setvar"],
-    "^staticvar [a-zA-Z]+ = $": ["setstaticvar"],
+    "^var $": ["setvar"],
+    "^staticvar$": ["setstaticvar"],
+    "^[a-zA-Z]+ = $": ["assignvar"],
     "^true|false$": ["bool"],
     "^[ |\t]$": ["ignore"]
 }
@@ -68,18 +72,10 @@ def tokenizeln(line):
         elif match[1][0] == "bool":
             tokenized.append([match[1][0], match[0].group()])
             continue
-        elif match[1][0] == "var":
-            tokenized.append([match[1][0], match[1][1]])
-            continue
-        elif match[1][0] == "setvar":
-            varname = match[0].group()[4:-3]
+        elif match[1][0] == "assignvar":
+            varname = match[0].group()[:-3]
             tokenized.append([match[1][0], varname])
-            tokens.update({f"^{varname}$": ["var", varname]})
-            continue
-        elif match[1][0] == "setstaticvar":
-            varname = match[0].group()[10:-3]
-            tokenized.append([match[1][0], varname])
-            tokens.update({f"^{varname}$": ["staticvar", varname]})
+            tokens.update({f"^{varname}$": [tokenized[len(tokenized) - 3][0][3:], varname]})
             continue
         tokenized.append(match[1])
     return tokenized
