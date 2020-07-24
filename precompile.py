@@ -30,7 +30,7 @@ def compileline(line, f):
         compileline(line[3], f)
         f.write(f"setvar, {line[2]}, {line[1]}\n")
     elif line[0] == "setstaticvar":
-        staticvars[line[2]] = [line[1], line[3]]
+        staticvars[line[2]] = line[3]
     elif line[0] == "newfunc":
         branchstack.append("function")
         f.write(f"newfunc, {line[1]}\n")
@@ -58,6 +58,7 @@ def compileline(line, f):
 def resolvecall(line, f):
     fname = line[1]
     for arg in line[2]:
+        #TODO: test if code is actually used
         if arg[0] == "var" or arg[0] == "staticvar":
             resolvevar(arg, f)
         elif arg[0] == "call":
