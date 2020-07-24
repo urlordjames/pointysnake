@@ -79,6 +79,8 @@ namespace makebin
         public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody)
         {
             String[] splitline = line.Split(new String[] { ", " }, StringSplitOptions.None);
+            Instruction previous;
+            TypeSig type = mod.CorLibTypes.Int32;
             switch (splitline[0]) {
                 case "ldstr":
                     ldstr(epBody, splitline[1]);
@@ -94,20 +96,14 @@ namespace makebin
                     switch (splitline[1]) {
                         case "print":
                             var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
-                            Instruction previous = epBody.Instructions[epBody.Instructions.Count - 1];
-                            TypeSig type = mod.CorLibTypes.Int32;
+                            previous = epBody.Instructions[epBody.Instructions.Count - 1];
                             if (previous.OpCode == OpCodes.Ldstr)
                             {
                                 type = mod.CorLibTypes.String;
                             }
                             else if (previous.OpCode == OpCodes.Call)
                             {
-                                object operand = previous.GetOperand();
-                                if (operand != null && operand is MethodDefUser)
-                                {
-                                    MethodDefUser method = (MethodDefUser)operand;
-                                    type = method.ReturnType;
-                                }
+                                type = getReturnType(previous.GetOperand());
                             }
                             else if (previous.IsLdloc())
                             {
@@ -187,6 +183,12 @@ namespace makebin
                             break;
                     }
                     return;
+                case "pop?":
+                    previous = epBody.Instructions[epBody.Instructions.Count - 1];
+                    if (type.GetElementType() != ElementType.Void) {
+                        epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
+                    }
+                    return;
             }
             Console.WriteLine("error: unknown intermediate instruction");
             Console.WriteLine(line);
@@ -234,6 +236,16 @@ namespace makebin
                 epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(0));
             }
             
+        }
+
+        public static TypeSig getReturnType(object operand)
+        {
+            if (operand != null && operand is MethodDefUser)
+            {
+                MethodDefUser method = (MethodDefUser)operand;
+                return method.ReturnType;
+            }
+            throw new Exception("operand invalid");
         }
     }
 }

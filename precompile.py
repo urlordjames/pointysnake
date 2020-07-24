@@ -15,6 +15,8 @@ def psncompile(filename):
     f = open("precomp.psnbin", "w")
     for line in parsed:
         compileline(line, f)
+        if line[0] == "call":
+            f.write("pop?\n")
     f.close()
 
 def compileline(line, f):
