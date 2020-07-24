@@ -23,7 +23,7 @@ def compileline(line, f):
     global branchid
     if line[0] in validtypes:
         f.write(f"ld{line[0]}, {str(line[1])}\n")
-    elif line[0] == "var":
+    elif line[0] == "var" or line[0] == "staticvar":
         resolvevar(line, f)
     elif line[0] == "call":
         resolvecall(line, f)
@@ -43,7 +43,7 @@ def compileline(line, f):
         else:
             f.write(f"brend, {str(context)}\n")
     elif line[0] == "assert":
-        resolvevar(line[1], f)
+        compileline(line[1], f)
         f.write(f"brtrue, {str(branchid)}\n")
         f.write("ldint, 1\n")
         f.write("call, return\n")

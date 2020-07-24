@@ -86,7 +86,7 @@ def tokenizeln(line):
                 oldthing = tokenized[len(tokenized) - 2][0]
             except:
                 continue
-            if not (oldthing == "setvar" or "setstaticvar"):
+            if not (oldthing == "setvar" or oldthing == "setstaticvar"):
                 continue
             varname = match[0].group()[:-1]
             tokenized.append([match[1][0], varname])
