@@ -14,7 +14,7 @@ namespace makebin
 
         static void Main(string[] args)
         {
-            String[] file = File.ReadAllLines("precomp.psnbin");
+            string[] file = File.ReadAllLines("precomp.psnbin");
             var mod = newmod("PointySnakeModule");
             var entryPoint = new MethodDefUser("Main", MethodSig.CreateStatic(mod.CorLibTypes.Int32, new SZArraySig(mod.CorLibTypes.String)));
             startUpType = new TypeDefUser("PointySnake", "Program", mod.CorLibTypes.Object.TypeDefOrRef);
@@ -28,7 +28,7 @@ namespace makebin
             startUpType.Methods.Add(entryPoint);
             mod.EntryPoint = entryPoint;
             currentfunc = mod.EntryPoint;
-            foreach (String line in file) {
+            foreach (string line in file) {
                 WriteInstruction(line, mod, currentfunc.Body);
             }
             if (epBody.Instructions.Count == 0 || epBody.Instructions[epBody.Instructions.Count - 1].OpCode != OpCodes.Ret)
@@ -45,7 +45,7 @@ namespace makebin
             awaitbutton();
         }
 
-        public static ModuleDefUser newmod(String name) {
+        public static ModuleDefUser newmod(string name) {
             var mod = new ModuleDefUser(name);
             mod.RuntimeVersion = "v4.0.30319";
             mod.Kind = ModuleKind.Console;
@@ -54,7 +54,7 @@ namespace makebin
             return mod;
         }
 
-        public static MethodDef newfunc(ModuleDefUser mod, String name) {
+        public static MethodDef newfunc(ModuleDefUser mod, string name) {
             var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(mod.CorLibTypes.Int32));
             newfunction.Attributes = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
             newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed;
@@ -63,7 +63,7 @@ namespace makebin
             return newfunction;
         }
 
-        public static MethodDef findfunc(String name)
+        public static MethodDef findfunc(string name)
         {
             return startUpType.FindMethod(name);
         }
@@ -76,9 +76,9 @@ namespace makebin
 #endif
         }
 
-        public static void WriteInstruction(String line, ModuleDefUser mod, CilBody epBody)
+        public static void WriteInstruction(string line, ModuleDefUser mod, CilBody epBody)
         {
-            String[] splitline = line.Split(new String[] { ", " }, StringSplitOptions.None);
+            string[] splitline = line.Split(new string[] { ", " }, StringSplitOptions.None);
             Instruction previous;
             TypeSig type = mod.CorLibTypes.Int32;
             switch (splitline[0]) {
@@ -200,7 +200,7 @@ namespace makebin
             Environment.Exit(1);
         }
 
-        public static Local getvar(TypeSig type, String name, LocalList variables)
+        public static Local getvar(TypeSig type, string name, LocalList variables)
         {
             foreach (Local var in variables) {
                 if (var.Name == name) {
@@ -210,7 +210,7 @@ namespace makebin
             return new Local(type, name);
         }
 
-        public static void ldvar(CilBody epBody, String name)
+        public static void ldvar(CilBody epBody, string name)
         {
             Local var = epBody.Variables[0];
             int i = 0;
@@ -222,7 +222,7 @@ namespace makebin
             epBody.Instructions.Add(OpCodes.Ldloc.ToInstruction(var));
         }
 
-        public static void ldstr(CilBody epBody, String str)
+        public static void ldstr(CilBody epBody, string str)
         {
             epBody.Instructions.Add(OpCodes.Ldstr.ToInstruction(str));
         }
