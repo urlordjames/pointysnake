@@ -2,7 +2,7 @@
 
 ![pointysnake logo](pointysnake.png)
 
-A somewhat essoteric programming language built using C# (pointy) and Python (snake).  Pointysnake is a statically typed (not yet, but should be soon), minimalistic, CIL compiled, functional programming language with a focus on having the benefits of both Python and C# while *attempting* to negate the problems of both.
+Pointysnake is a somewhat essoteric programming language built using C# (pointy) and Python (snake).  Pointysnake is a programming language with a focus on having the benefits of both Python and C# while *attempting* to negate the problems of both.
 
 # pointysnake is not ready for use in serious projects, please submit an issue if you encounter a bug
 
@@ -12,6 +12,9 @@ print("hello world!")
 ```
 
 That's it, one line, no defining entrypoints, classes, or namespaces.
+
+# documentation
+It doesn't exist yet.
 
 # how to compile
 
