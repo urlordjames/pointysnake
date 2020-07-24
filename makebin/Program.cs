@@ -185,6 +185,9 @@ namespace makebin
                     return;
                 case "pop?":
                     previous = epBody.Instructions[epBody.Instructions.Count - 1];
+                    if (previous.OpCode != OpCodes.Call) {
+                        return;
+                    }
                     type = getReturnType(previous.GetOperand());
                     if (type.GetElementType() != ElementType.Void) {
                         epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
