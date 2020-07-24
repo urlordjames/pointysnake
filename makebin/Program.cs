@@ -244,10 +244,14 @@ namespace makebin
 
         public static TypeSig getReturnType(object operand)
         {
-            MemberRef method = operand as MemberRef;
-            if (method != null)
+            //there should probably be a common interface for this...
+            if (operand is MemberRef)
             {
-                return method.ReturnType;
+                return ((MemberRef)operand).ReturnType;
+            }
+            if (operand is MethodDef)
+            {
+                return ((MethodDef)operand).ReturnType;
             }
             throw new Exception("operand invalid");
         }
