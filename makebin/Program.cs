@@ -244,9 +244,9 @@ namespace makebin
 
         public static TypeSig getReturnType(object operand)
         {
-            if (operand != null && operand is MethodDefUser)
+            MemberRef method = operand as MemberRef;
+            if (method != null)
             {
-                MethodDefUser method = (MethodDefUser)operand;
                 return method.ReturnType;
             }
             throw new Exception("operand invalid");
