@@ -58,7 +58,7 @@ def compileline(line, f):
 def resolvecall(line, f):
     fname = line[1]
     for arg in line[2]:
-        if arg == "var" or arg == "staticvar":
+        if arg[0] == "var" or "staticvar":
             resolvevar(arg, f)
         else:
             compileline(arg, f)
