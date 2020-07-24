@@ -58,10 +58,7 @@ def compileline(line, f):
 def resolvecall(line, f):
     fname = line[1]
     for arg in line[2]:
-        if arg[0] == "var" or "staticvar":
-            resolvevar(arg, f)
-        else:
-            compileline(arg, f)
+        compileline(arg, f)
     if fname == "return":
         if line[2] == []:
             f.write("ldint, 0\n")
