@@ -2,7 +2,6 @@ from lex import lex
 
 constants = ["str", "int", "bool"]
 validargs = ["str", "int", "bool", "var", "staticvar"]
-rawtypes = [str, int, bool]
 
 def parse(filename):
     lexed = lex(filename)
@@ -15,9 +14,7 @@ def parse(filename):
     return ast
 
 def parseline(line):
-    if type(line) in rawtypes:
-        return line
-    elif line[0] in constants:
+    if line[0] in constants:
         return line
     elif line[0] == "args":
         if len(line[1]) >= 1:
