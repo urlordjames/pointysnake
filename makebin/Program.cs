@@ -130,6 +130,9 @@ namespace makebin
                         case "eq":
                             epBody.Instructions.Add(OpCodes.Ceq.ToInstruction());
                             return;
+                        case "gt":
+                            epBody.Instructions.Add(OpCodes.Cgt.ToInstruction());
+                            return;
                     }
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
                     return;
