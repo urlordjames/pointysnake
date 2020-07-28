@@ -41,7 +41,7 @@ def compileline(line, f):
         if context[0] == "function":
             f.write("endfunc\n")
         elif context[0] == "if":
-            f.write(f"brend, {str(context)}\n")
+            f.write(f"brend, {str(context[1])}\n")
         elif context[0] == "while":
             f.write(f"brend, {str(context[3])}\n")
             compileline(context[2], f)
