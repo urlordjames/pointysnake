@@ -67,6 +67,8 @@ def parseline(line):
         return [line[0][0], line[1]]
     elif line[0][0] == "ifdefine":
         return [line[0][0], [parseline(line[1:-2])]]
+    elif line[0][0] == "whiledefine":
+        return [line[0][0], [parseline(line[1:-2])]]
     raise Exception("token unknown")
 
 if __name__ == "__main__":

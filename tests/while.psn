@@ -1,0 +1,10 @@
+#test of while loops
+#should return 0
+
+var int count = 5
+
+while (eq(count, 5)) {
+    print("egg")
+}
+
+return(0)

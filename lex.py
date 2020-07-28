@@ -30,6 +30,7 @@ tokens = {
     "^str $": ["type", "str"],
     "^bool $": ["type", "bool"],
     "^if \\($": ["ifdefine"],
+    "^while \\($": ["whiledefine"],
     "^[a-z]+\\($": ["function"],
     "^\\d+$": ["int"],
     "^\".*\"$": ["str"],
