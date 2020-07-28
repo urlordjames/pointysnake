@@ -161,26 +161,27 @@ namespace makebin
                 case "endfunc":
                     currentfunc = mod.EntryPoint;
                     return;
+                case "br":
+                    handleBrBegin(epBody, int.Parse(splitline[1]), "br");
+                    return;
                 case "brtrue":
-                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                    manager.pushbranch(int.Parse(splitline[1]), epBody.Instructions.Count - 1, "brtrue");
+                    handleBrBegin(epBody, int.Parse(splitline[1]), "brtrue");
                     return;
                 case "brfalse":
-                    epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
-                    manager.pushbranch(int.Parse(splitline[1]), epBody.Instructions.Count - 1, "brfalse");
+                    handleBrBegin(epBody, int.Parse(splitline[1]), "brfalse");
                     return;
                 case "brend":
                     //wasted instruction, fix potentially
                     epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
                     placeholder = epBody.Instructions.Count - 1;
                     int branch = int.Parse(splitline[1]);
-                    switch (manager.getbranchtype(branch)) {
-                        case "brtrue":
-                            epBody.Instructions[manager.getbranch(branch)] = OpCodes.Brtrue.ToInstruction(epBody.Instructions[placeholder]);
-                            break;
-                        case "brfalse":
-                            epBody.Instructions[manager.getbranch(branch)] = OpCodes.Brfalse.ToInstruction(epBody.Instructions[placeholder]);
-                            break;
+                    if (manager.branchExists(branch))
+                    {
+                        handleBrEnd(epBody, branch, placeholder, manager.getBranchType(branch));
+                    }
+                    else
+                    {
+                        manager.pushBranch(branch, placeholder, "brend");
                     }
                     return;
                 case "pop?":
@@ -254,6 +255,34 @@ namespace makebin
                 return ((MethodDef)operand).ReturnType;
             }
             throw new Exception("operand invalid");
+        }
+
+        public static void handleBrEnd(CilBody epBody, int branch, int placeholder, string type) {
+            switch (type)
+            {
+                case "br":
+                    epBody.Instructions[manager.getBranch(branch)] = OpCodes.Br.ToInstruction(epBody.Instructions[placeholder]);
+                    break;
+                case "brtrue":
+                    epBody.Instructions[manager.getBranch(branch)] = OpCodes.Brtrue.ToInstruction(epBody.Instructions[placeholder]);
+                    break;
+                case "brfalse":
+                    epBody.Instructions[manager.getBranch(branch)] = OpCodes.Brfalse.ToInstruction(epBody.Instructions[placeholder]);
+                    break;
+            }
+        }
+
+        public static void handleBrBegin(CilBody epBody, int branch, string instruction) {
+            epBody.Instructions.Add(OpCodes.Nop.ToInstruction());
+            int placeholder = epBody.Instructions.Count - 1;
+            if (manager.branchExists(branch))
+            {
+                epBody.Instructions.Add(OpCodes.Brtrue.ToInstruction(epBody.Instructions[manager.getBranch(branch)]));
+            }
+            else
+            {
+                manager.pushBranch(branch, placeholder, instruction);
+            }
         }
     }
 }
