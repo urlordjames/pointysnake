@@ -1,6 +1,6 @@
 #test of ignoring returned value
 #should give no compilation error
-function test() {
+function int test() {
     return(0)
 }
 

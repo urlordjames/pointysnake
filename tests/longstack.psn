@@ -2,15 +2,15 @@
 #also unintentionally a test of ignoring \t
 #should print 7
 
-function cheese() {
+function int cheese() {
 	return(7)
 }
 
-function gorg() {
+function int gorg() {
 	return(cheese())
 }
 
-function bruh() {
+function int bruh() {
 	return(gorg())
 }
 

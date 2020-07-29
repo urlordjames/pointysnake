@@ -54,8 +54,8 @@ namespace makebin
             return mod;
         }
 
-        public static MethodDef newfunc(ModuleDefUser mod, string name) {
-            var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(mod.CorLibTypes.Int32));
+        public static MethodDef newfunc(ModuleDefUser mod, string name, CorLibTypeSig returntype) {
+            var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(returntype));
             newfunction.Attributes = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
             newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed | MethodImplAttributes.AggressiveOptimization;
             startUpType.Methods.Add(newfunction);
@@ -140,26 +140,11 @@ namespace makebin
                     ldvar(epBody, splitline[1]);
                     return;
                 case "setvar":
-                    Local local = null;
-                    switch (splitline[2]) {
-                        case "int":
-                            local = getvar(mod.CorLibTypes.Int32, splitline[1], epBody.Variables);
-                            break;
-                        case "str":
-                            local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
-                            break;
-                        case "bool":
-                            local = getvar(mod.CorLibTypes.Boolean, splitline[1], epBody.Variables);
-                            break;
-                        case "var":
-                            ldvar(epBody, splitline[3]);
-                            local = getvar(mod.CorLibTypes.String, splitline[1], epBody.Variables);
-                            break;
-                    }
+                    Local local = getvar(typeFromString(mod, splitline[2]), splitline[1], epBody.Variables);
                     epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
                     return;
                 case "newfunc":
-                    currentfunc = newfunc(mod, splitline[1]);
+                    currentfunc = newfunc(mod, splitline[1], typeFromString(mod, splitline[2]));
                     return;
                 case "endfunc":
                     currentfunc = mod.EntryPoint;
@@ -212,6 +197,23 @@ namespace makebin
                 }
             }
             return new Local(type, name);
+        }
+
+        public static CorLibTypeSig typeFromString(ModuleDefUser mod, string name) {
+            switch (name)
+            {
+                case "int":
+                    return mod.CorLibTypes.Int32;
+                case "str":
+                    return mod.CorLibTypes.String;
+                case "bool":
+                    return mod.CorLibTypes.Boolean;
+                case "var":
+                    return mod.CorLibTypes.String;
+                case "void":
+                    return mod.CorLibTypes.Void;
+            }
+            return mod.CorLibTypes.Int32;
         }
 
         public static void ldvar(CilBody epBody, string name)

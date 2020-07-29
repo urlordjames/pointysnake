@@ -1,11 +1,11 @@
 #test of argument parsing with nested functions
 #should return 0
 
-function two() {
+function int two() {
     return(2)
 }
 
-function three() {
+function int three() {
     return(3)
 }
 

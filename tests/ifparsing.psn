@@ -1,6 +1,6 @@
 #test of if parsing
 #should give no compilation or runtime errors and return 0
-function test() {
+function int test() {
     if (true) {
         if (false) {
             return(1)
