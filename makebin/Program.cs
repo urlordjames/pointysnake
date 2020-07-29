@@ -213,7 +213,7 @@ namespace makebin
                 case "void":
                     return mod.CorLibTypes.Void;
             }
-            return mod.CorLibTypes.Int32;
+            throw new Exception("invalid type");
         }
 
         public static void ldvar(CilBody epBody, string name)
