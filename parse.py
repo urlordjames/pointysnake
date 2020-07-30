@@ -26,7 +26,7 @@ def parseline(line):
                 if arg[0] == "function":
                     altbuffer.append(arg)
                     funcscope += 1
-                elif arg[0] == "functionend":
+                elif arg[0] == "argend":
                     altbuffer.append(arg)
                     funcscope -= 1
                 elif funcscope == 0 and arg[0] == "argseperate":
@@ -63,7 +63,7 @@ def parseline(line):
             raise Exception("error: staticvar cannot be set as returned value from function")
         return [line[0][0], line[1][1], line[2][1], parseline(line[4])]
     elif line[0][0] == "function":
-        if line[1][0] == "functionend":
+        if line[1][0] == "argend":
             return ["call", line[0][1], []]
         else:
             return ["call", line[0][1], parseline(["args", line[1:-1]])]
