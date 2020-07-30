@@ -70,9 +70,9 @@ def parseline(line):
     elif line[0][0] == "assert":
         return [line[0][0], line[1]]
     elif line[0][0] == "ifdefine":
-        return [line[0][0], [parseline(line[1:-2])]]
+        return [line[0][0], [parseline(line[2:-2])]]
     elif line[0][0] == "whiledefine":
-        return [line[0][0], [parseline(line[1:-2])]]
+        return [line[0][0], [parseline(line[2:-2])]]
     raise Exception("token unknown")
 
 if __name__ == "__main__":
