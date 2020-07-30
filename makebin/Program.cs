@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using dnlib.DotNet.Writer;
@@ -15,8 +16,8 @@ namespace makebin
         static void Main(string[] args)
         {
             string[] file = File.ReadAllLines("precomp.psnbin");
-            var mod = newmod("PointySnakeModule");
-            var entryPoint = new MethodDefUser("Main", MethodSig.CreateStatic(mod.CorLibTypes.Int32, new SZArraySig(mod.CorLibTypes.String)));
+            ModuleDefUser mod = newmod("PointySnakeModule");
+            MethodDefUser entryPoint = new MethodDefUser("Main", MethodSig.CreateStatic(mod.CorLibTypes.Int32, new SZArraySig(mod.CorLibTypes.String)));
             startUpType = new TypeDefUser("PointySnake", "Program", mod.CorLibTypes.Object.TypeDefOrRef);
             mod.Types.Add(startUpType);
             entryPoint.Attributes = MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
@@ -54,8 +55,8 @@ namespace makebin
             return mod;
         }
 
-        public static MethodDef newfunc(ModuleDefUser mod, string name, CorLibTypeSig returntype) {
-            var newfunction = new MethodDefUser(name, MethodSig.CreateStatic(returntype));
+        public static MethodDef newfunc(ModuleDefUser mod, string name, CorLibTypeSig returntype, TypeSig[] arguments) {
+            MethodDefUser newfunction = new MethodDefUser(name, MethodSig.CreateStatic(returntype, arguments));
             newfunction.Attributes = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot;
             newfunction.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed | MethodImplAttributes.AggressiveOptimization;
             startUpType.Methods.Add(newfunction);
@@ -133,6 +134,10 @@ namespace makebin
                         case "gt":
                             epBody.Instructions.Add(OpCodes.Cgt.ToInstruction());
                             return;
+                        case "arg":
+                            int argnum = (int) epBody.Instructions[epBody.Instructions.Count - 1].GetOperand();
+                            epBody.Instructions[epBody.Instructions.Count - 1] = OpCodes.Ldarg.ToInstruction(mod.EntryPoint.Parameters[argnum]);
+                            return;
                     }
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
                     return;
@@ -144,7 +149,13 @@ namespace makebin
                     epBody.Instructions.Add(OpCodes.Stloc.ToInstruction(epBody.Variables.Add(local)));
                     return;
                 case "newfunc":
-                    currentfunc = newfunc(mod, splitline[1], typeFromString(mod, splitline[2]));
+                    List<string> arguments = new List<string>();
+                    foreach (string arg in splitline)
+                    {
+                        arguments.Add(arg);
+                    }
+                    arguments.RemoveRange(0, 3);
+                    currentfunc = newfunc(mod, splitline[1], typeFromString(mod, splitline[2]), argumentsFromStrings(mod, arguments.ToArray()));
                     return;
                 case "endfunc":
                     currentfunc = mod.EntryPoint;
@@ -245,7 +256,7 @@ namespace makebin
             } else {
                 epBody.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(0));
             }
-            
+
         }
 
         public static TypeSig getReturnType(object operand)
@@ -288,6 +299,15 @@ namespace makebin
             {
                 manager.pushBranch(branch, placeholder, instruction);
             }
+        }
+
+        public static TypeSig[] argumentsFromStrings(ModuleDefUser mod, string[] names) {
+            List<TypeSig> arguments = new List<TypeSig>();
+            foreach (string argname in names)
+            {
+                arguments.Add(typeFromString(mod, argname));
+            }
+            return arguments.ToArray();
         }
     }
 }

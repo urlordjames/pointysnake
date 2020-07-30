@@ -47,7 +47,11 @@ def parseline(line):
     elif line[0][0] in constants:
         return parseline(line[0])
     elif line[0][0] == "functiondefine":
-        return ["newfunc", line[1][1], line[2][1]]
+        argend = len(line) - 2
+        args = []
+        for i in range(3, argend):
+            args.append(line[i][1])
+        return ["newfunc", line[1][1], line[2][1], args]
     elif line[0][0] == "functionterminate":
         return ["endfunc"]
     elif line[0][0] == "setvar":

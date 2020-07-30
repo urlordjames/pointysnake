@@ -26,9 +26,9 @@ tokens = {
     "^{$": ["functionstart"],
     "^}$": ["functionterminate"],
     "^,$": ["argseperate"],
-    "^int $": ["type", "int"],
-    "^str $": ["type", "str"],
-    "^bool $": ["type", "bool"],
+    "^int$": ["type", "int"],
+    "^str$": ["type", "str"],
+    "^bool$": ["type", "bool"],
     "^if \\($": ["ifdefine"],
     "^while \\($": ["whiledefine"],
     "^[a-z]+\\($": ["function"],
@@ -38,7 +38,7 @@ tokens = {
     "^var $": ["setvar"],
     "^staticvar $": ["setstaticvar"],
     "^[a-zA-Z]+ $": ["assignvar"],
-    "^= $": ["assignop"],
+    "^=$": ["assignop"],
     "^true|false$": ["bool"],
     "^[ |\t]$": ["ignore"]
 }
@@ -51,17 +51,9 @@ def tokenizeln(line):
         for token in tokens.keys():
             match = re.search(token, buffer)
             if not match is None:
-                matchlen = len(matches)
-                if matchlen >= 2 and (matches[matchlen - 2][1][0] == "setvar" or matches[matchlen - 2][1][0] == "setstaticvar"):
-                    matches.append([match, tokens[token]])
-                    buffer = ""
-                    continue
-                else:
-                    if tokens[token][0] == "assignvar":
-                        continue
-                    matches.append([match, tokens[token]])
-                    buffer = ""
-                    continue
+                matches.append([match, tokens[token]])
+                buffer = ""
+                break
     tokenized = []
     for match in matches:
         if match[1][0] == "ignore":

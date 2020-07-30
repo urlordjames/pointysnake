@@ -1,9 +1,9 @@
 #test of function stuff
 #should return 0
-function str dog() {
-    return("e")
+function str dog(str) {
+    return(arg(0))
 }
 
-var bool good = eq(dog(), "e")
+var bool good = eq(dog("e"), "e")
 
 assert good

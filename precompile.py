@@ -35,7 +35,10 @@ def compileline(line, f):
         staticvars[line[2]] = line[3]
     elif line[0] == "newfunc":
         branchstack.append(["function"])
-        f.write(f"newfunc, {line[2]}, {line[1]}\n")
+        f.write(f"newfunc, {line[2]}, {line[1]}")
+        for arg in line[3]:
+            f.write(f", {arg}")
+        f.write("\n")
     elif line[0] == "endfunc":
         context = branchstack.pop()
         if context[0] == "function":
