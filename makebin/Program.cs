@@ -134,10 +134,6 @@ namespace makebin
                         case "gt":
                             epBody.Instructions.Add(OpCodes.Cgt.ToInstruction());
                             return;
-                        case "arg":
-                            int argnum = (int) epBody.Instructions[epBody.Instructions.Count - 1].GetOperand();
-                            epBody.Instructions[epBody.Instructions.Count - 1] = OpCodes.Ldarg.ToInstruction(mod.EntryPoint.Parameters[argnum]);
-                            return;
                     }
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
                     return;
@@ -192,6 +188,9 @@ namespace makebin
                     if (type.GetElementType() != ElementType.Void) {
                         epBody.Instructions.Add(OpCodes.Pop.ToInstruction());
                     }
+                    return;
+                case "arg":
+                    epBody.Instructions.Add(OpCodes.Ldarg.ToInstruction(mod.EntryPoint.Parameters[int.Parse(splitline[1])]));
                     return;
             }
             Console.WriteLine("error: unknown intermediate instruction");

@@ -77,6 +77,11 @@ def compileline(line, f):
 
 def resolvecall(line, f):
     fname = line[1]
+    if fname == "arg":
+        if not line[2][0][0] == "int":
+            raise Exception("arg() takes one int literal argument")
+        f.write(f"arg, {line[2][0][1]}\n")
+        return
     for arg in line[2]:
         compileline(arg, f)
     if fname == "return":
