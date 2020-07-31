@@ -196,10 +196,8 @@ namespace makebin
                     epBody.Instructions.Add(OpCodes.Ldarg.ToInstruction(mod.EntryPoint.Parameters[int.Parse(splitline[1])]));
                     return;
             }
-            Console.WriteLine("error: unknown intermediate instruction");
             Console.WriteLine(line);
-            awaitbutton();
-            Environment.Exit(1);
+            throw new Exception("unknown intermediate instruction");
         }
 
         public static Local getvar(TypeSig type, string name, LocalList variables)
