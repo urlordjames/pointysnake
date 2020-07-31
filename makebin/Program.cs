@@ -134,6 +134,9 @@ namespace makebin
                         case "gt":
                             epBody.Instructions.Add(OpCodes.Cgt.ToInstruction());
                             return;
+                        case "lt":
+                            epBody.Instructions.Add(OpCodes.Clt.ToInstruction());
+                            return;
                     }
                     epBody.Instructions.Add(OpCodes.Call.ToInstruction(findfunc(splitline[1])));
                     return;

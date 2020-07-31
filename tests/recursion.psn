@@ -1,0 +1,13 @@
+#test of recursion
+#should return 0
+function int fibo(int) {
+    if (lt(arg(0), 2)) {
+        return(arg(0))
+    }
+    return(add(fibo(sub(arg(0), 1)), fibo(sub(arg(0), 2))))
+}
+
+if (eq(fibo(20), 6765)) {
+    return(0)
+}
+return(1)
