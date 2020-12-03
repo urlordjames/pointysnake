@@ -10,8 +10,11 @@ jobs:
       steps:
       - uses: "actions/checkout@v2"
 
+      #- name: "build"
+      #  run: "chmod +x build.sh && ./build.sh"
+
       - name: "build"
-        run: "chmod +x build.sh && ./build.sh"
+        run: "./build.sh"
 
       - uses: "actions/upload-artifact@v2"
         with:
@@ -39,7 +42,7 @@ jobs:
           path: "precompiled/"
 
     compile-run-tests:
-      needs: ["build-compiler", precompile-tests]
+      needs: ["build-compiler", "precompile-tests"]
       runs-on: "ubuntu-latest"
       container: "mono"
 
@@ -55,5 +58,8 @@ jobs:
         with:
           name: "compiler"
 
+      #- name: "compile and run tests"
+      #  run: "chmod +x runtests.sh && ./runtests.sh"
+
       - name: "compile and run tests"
-        run: "chmod +x runtests.sh && ./runtests.sh"
+        run: "./runtests.sh"

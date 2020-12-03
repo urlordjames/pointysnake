@@ -13,7 +13,7 @@ def runcmd(command):
 
 for test in tests:
     print(test)
-    runcmd(["python", "build.py", "./tests/" + test])
+    runcmd(["python", "src/build.py", "./tests/" + test])
     runcmd(["cp", "precomp.psnbin", "precompiled/" + test + ".psnbin"])
 
 print("done")

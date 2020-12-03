@@ -76,4 +76,4 @@ def parseline(line):
     raise Exception("token unknown")
 
 if __name__ == "__main__":
-    print(parse("tests/printstr.psn"))
+    print(parse("../tests/printstr.psn"))

@@ -135,7 +135,11 @@ makebin/packages
 makebin/.vs
 
 # precompiled script
-precomp.psnbin
+*.psnbin
 
 # precompiled test scripts folder
 precompiled
+
+# binaries
+*.dll
+*.exe

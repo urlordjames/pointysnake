@@ -99,4 +99,4 @@ def resolvevar(variable, f):
         f.write(f"ld{staticinfo[0]}, {str(staticinfo[1])}\n")
 
 if __name__ == "__main__":
-    psncompile("tests/printstr.psn")
+    psncompile("../tests/printstr.psn")
