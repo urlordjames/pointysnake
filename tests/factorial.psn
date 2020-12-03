@@ -1,0 +1,13 @@
+#another test of recursion
+#should return 0
+function int factorial(int) {
+    if (lt(arg(0), 1)) {
+        return(1);
+    }
+    return(mult(arg(0), factorial(sub(arg(0), 1))));
+}
+
+if (eq(factorial(7), 5040)) {
+    return(0)
+}
+return(1)
