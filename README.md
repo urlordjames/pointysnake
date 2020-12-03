@@ -2,28 +2,23 @@
 
 ![pointysnake logo](pointysnake.png)
 
-Pointysnake is a somewhat essoteric programming language built using C# (pointy) and Python (snake).  Pointysnake is a programming language with a focus on having the benefits of both Python and C# while *attempting* to negate the problems of both.
+Pointysnake is an incomplete programming language built using C# (pointy) and Python (snake).  The goal of pointysnake is to create a language with the speed and portability of mono executables but with the simplicity of Python.
 
 # pointysnake is not ready for use in serious projects, please submit an issue if you encounter a bug
 
-# hello world program
+# hello world example
 ```
 print("hello world!")
 ```
 
-That's it, one line, no defining entrypoints, classes, or namespaces.
-
-# documentation
-It doesn't exist yet.
-
 # how to compile
 
-- make sure you have dotnet or mono runtime installed (I'm fairly certain either will work)
-- make sure python3.7 is installed **there is a bug in 3.5 that causes precompilation to randomly fail half the time!**
-- clone the github repo
-- create a file (although it's not enforced, a .psn extension is reccomended) and write your code
-- precompile your code by running `python build.py (filename)`.
-- build the compiler from source, or go to the Github actions page and download the artifact called `compiler`
-- place the generated file called `precomp.psnbin` from the python script in the same folder as `makebin.exe` and run it
+- make sure you have some C# runtime installed
+- make sure python3.7 is installed **this project will not work with python<=3.5**
+- alternately, there is a `shell.nix` provided, running `nix-shell` will automatically configure a build environment for you
+- clone the GitHub repo
+- write some code (I'd advise reading through some of the tests as examples)
+- precompile your code by running `python build.py <filename>`.
+- build the compiler from source, or go to the actions page and download the artifact called `compiler`
+- place the generated file `precomp.psnbin` in the same folder as `makebin.exe` and run it (`mono makebin.exe`)
 - executable called `executable.exe` will be created
-- congratulations, you've compiled pointysnake!
