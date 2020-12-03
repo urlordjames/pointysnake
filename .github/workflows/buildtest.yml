@@ -10,11 +10,8 @@ jobs:
       steps:
       - uses: "actions/checkout@v2"
 
-      #- name: "build"
-      #  run: "chmod +x build.sh && ./build.sh"
-
       - name: "build"
-        run: "./build.sh"
+        run: "./makebin/build.sh"
 
       - uses: "actions/upload-artifact@v2"
         with:
@@ -57,9 +54,6 @@ jobs:
       - uses: "actions/download-artifact@v2"
         with:
           name: "compiler"
-
-      #- name: "compile and run tests"
-      #  run: "chmod +x runtests.sh && ./runtests.sh"
 
       - name: "compile and run tests"
         run: "./runtests.sh"
