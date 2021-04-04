@@ -2,9 +2,7 @@
 
 ![pointysnake logo](pointysnake.png)
 
-Pointysnake is an incomplete programming language built using C# (pointy) and Python (snake).  The goal of pointysnake is to create a language with the speed and portability of mono executables but with the simplicity of Python.
-
-# pointysnake is not ready for use in serious projects, please submit an issue if you encounter a bug
+Pointysnake is an incomplete programming language built using C# (pointy) and Python (snake).  The goal of pointysnake is to create a language with the speed and portability of C# but with the simplicity of Python.
 
 # hello world example
 ```
