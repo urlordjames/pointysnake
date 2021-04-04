@@ -82,6 +82,9 @@ namespace makebin
             string[] splitline = line.Split(new string[] { ", " }, StringSplitOptions.None);
             Instruction previous;
             TypeSig type = mod.CorLibTypes.Int32;
+
+            var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
+
             switch (splitline[0]) {
                 case "ldstr":
                     ldstr(epBody, splitline[1]);
@@ -96,7 +99,6 @@ namespace makebin
                     int placeholder;
                     switch (splitline[1]) {
                         case "print":
-                            var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
                             previous = epBody.Instructions[epBody.Instructions.Count - 1];
                             if (previous.OpCode == OpCodes.Ldstr)
                             {
@@ -112,6 +114,10 @@ namespace makebin
                             }
                             var consoleWrite1 = new MemberRefUser(mod, "WriteLine", MethodSig.CreateStatic(mod.CorLibTypes.Void, type), consoleRef);
                             epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleWrite1));
+                            return;
+                        case "readline":
+                            var consoleRead1 = new MemberRefUser(mod, "ReadLine", MethodSig.CreateStatic(mod.CorLibTypes.String), consoleRef);
+                            epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleRead1));
                             return;
                         case "return":
                             epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
