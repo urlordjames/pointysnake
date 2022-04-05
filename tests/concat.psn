@@ -1,4 +1,4 @@
 var str one = "bruh"
 var str two = " cheezit"
-var bool good = concat(one, two)
-assert good
+var bool success = eq(concat(one, two), "bruh cheezit")
+assert success
