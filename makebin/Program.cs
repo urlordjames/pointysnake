@@ -124,6 +124,10 @@ namespace makebin
                             var concat = new MemberRefUser(mod, "Concat", MethodSig.CreateStatic(mod.CorLibTypes.String, mod.CorLibTypes.String, mod.CorLibTypes.String), stringRef);
                             epBody.Instructions.Add(OpCodes.Call.ToInstruction(concat));
                             return;
+                        case "seq":
+                            var seq = new MemberRefUser(mod, "op_Equality", MethodSig.CreateStatic(mod.CorLibTypes.Boolean, mod.CorLibTypes.String, mod.CorLibTypes.String), stringRef);
+                            epBody.Instructions.Add(OpCodes.Call.ToInstruction(seq));
+                            return;
                         case "return":
                             epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
                             return;
