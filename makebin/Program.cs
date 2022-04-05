@@ -84,6 +84,7 @@ namespace makebin
             TypeSig type = mod.CorLibTypes.Int32;
 
             var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
+						var stringRef = new TypeRefUser(mod, "System", "String", mod.CorLibTypes.AssemblyRef);
 
             switch (splitline[0]) {
                 case "ldstr":
@@ -118,6 +119,10 @@ namespace makebin
                         case "readline":
                             var consoleRead1 = new MemberRefUser(mod, "ReadLine", MethodSig.CreateStatic(mod.CorLibTypes.String), consoleRef);
                             epBody.Instructions.Add(OpCodes.Call.ToInstruction(consoleRead1));
+                            return;
+                        case "concat":
+                            var concat = new MemberRefUser(mod, "Concat", MethodSig.CreateStatic(mod.CorLibTypes.String, mod.CorLibTypes.String, mod.CorLibTypes.String), stringRef);
+                            epBody.Instructions.Add(OpCodes.Call.ToInstruction(concat));
                             return;
                         case "return":
                             epBody.Instructions.Add(OpCodes.Ret.ToInstruction());
