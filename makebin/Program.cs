@@ -84,7 +84,7 @@ namespace makebin
             TypeSig type = mod.CorLibTypes.Int32;
 
             var consoleRef = new TypeRefUser(mod, "System", "Console", mod.CorLibTypes.AssemblyRef);
-						var stringRef = new TypeRefUser(mod, "System", "String", mod.CorLibTypes.AssemblyRef);
+            var stringRef = new TypeRefUser(mod, "System", "String", mod.CorLibTypes.AssemblyRef);
 
             switch (splitline[0]) {
                 case "ldstr":
